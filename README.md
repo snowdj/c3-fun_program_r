@@ -10,7 +10,7 @@ This repository will house all the materials for the third course in the data sc
 	+ Understand how `purrr::map` differs from base functions, and why its preferable
 * Work with `sqllite` in R to understand databases
 * Join data together using databases
-- Investigate ways to interface `dplyr` with databases
+* Investigate ways to interface `dplyr` with databases
 
 <!--	
 * Use linear regression as a basic model and evaluate its limitations
