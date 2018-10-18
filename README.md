@@ -92,6 +92,11 @@ I suggest bookmarking the page as we will use it throughout the term.
 
 The final project will likely take one of three forms: R Markdown website, a reproducible document showing learning throughout the course, or a Shiny app.
 
+# Further materials
+
+- https://jennybc.github.io/purrr-tutorial/
+- https://github.com/jennybc/row-oriented-workflows
+
 # Assignments 
 As outlined in the table above, most class meetings will include a lab. All 
 labs will also count toward homework assignments, with roughly half the 
