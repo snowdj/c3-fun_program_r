@@ -12,7 +12,7 @@ This repository will house all the materials for the third course in the data sc
 	+ *email:* (preferred contact method) [daniela@uoregon.edu](mailto:daniela@uoregon.edu)
 	+ *phone:* 541-346-3317
 	+ *office:* 175 Lokey
-	+ *office hours*: Wednesday, 10-12:00 (shared with multiple regression)
+	+ *office hours*: 
 
 # Course Overview
 This is the third course in a sequence of courses that will eventually lead to 
@@ -67,30 +67,30 @@ I suggest bookmarking the page as we will use it throughout the term.
 
 
 # Weekly Schedule (Topics, Assignments, and Readings)
-|     **Week**     | **Theme**                                      | **Topics**                                                                                                              | **Lab**                                                                                           | **Assignment Assigned**                                                 | **Assignment Due**                                                           | **Reading**                                                                             |
-| :--------------: | :--------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------- | :--------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------- |
-| 1a <br/>(Sep 24) | Introduction to the course and getting started | Oh the places you'll go! An overview of the course and (some of) the R ecosystem                                        |                                                                                                   | DC: Orientation <br/>DC: Data wrangling<br/>Final Project               |                                                                              | MD 2<br/>R4DS 4                                                                         |
-| 1b <br/>(Sep 26) |                                                | The Data Science pipeline and getting your computer ready                                                               | Getting ready, Intro to R and R Studio                                                            | Lab 1<br/>DC: Projects<br/>DC: Data visualization                       | DC: Orientation <br/>DC: Data wrangling<br/>Final Project                    | MD 1.1<br/>R4DS 6                                                                       |
-| 2a <br/>(Oct 1)  | Introduction to data visualization             | Data visualization with ggplot2; Grammar of Graphics                                                                    | Scatterplots with smooths, line plots                                                             | Lab 2<br/>DC: Types of visualizations                                   | Lab 1<br/>DC: Projects<br/>DC: Data visualization<br/>Final Groups Finalized | MD 3.1-3.4<br/>R4DS 3.1-3.6                                                             |
-| 2b <br/>(Oct 3)  |                                                | More data vis basics with ggplot2                                                                                       | histograms, boxplots, barplots                                                                    | Lab 3<br/>DC: Grouping & summarizing                                    | Lab 2<br/>DC: Types of visualizations                                        | MD 3.5-3.9<br/>R4DS 3.7-3.10<br/>Healy 3                                                |
-| 3a <br/>(Oct 8)  | Basic data wrangling                           | Data wrangling with dplyr (skimr, ggplot2 with summarized data) <br/>R Sudio Projects<br/>Importing flat files with rio | import different data types<br/>skimr<br/>group_by %>% summarize                                  | Lab 4<br/>                                                              | Lab 3<br/>DC: Grouping & summarizing                                         | MD 5.1-5.7<br/>R4DS 8<br/>rio vignette (skim)                                           |
-| 3b<br/>(Oct 10)  |                                                | More data wrangling with dplyr                                                                                          | The lesser known stars of dplyr                                                                   | Lab 5<br/>DC: R Markdown Ch 1-3                                         | Lab 4                                                                        | R4DS 5<br/>MD 5.9                                                                       |
-| 4a<br/>(Oct 15)  | Dynamic and reproducible documents             | Intro to R Markdown <br/>Workflow advice (here::here)                                                                   | Put your scripts into an Rmd <br/>(one complete knitted file)                                     | Lab 6                                                                   | Lab 5<br/>DC: R Markdown Ch 1-3                                              | R4DS 27<br/>Bryan 4-8 (9 optional), 13<br/>https://github.com/jennybc/here_here         |
-| 4b<br/>(Oct 17)  |                                                | GitHub                                                                                                                  | Push Rmd + project to GitHub<br/>Case study with dplyr & ggplot2 in Rmd/github_document on GitHub | Lab 7                                                                   | Lab 6                                                                        | Bryan 19, 23-28                                                                         |
-| 5a<br/>(Oct 22)  | Dynamic and reproducible APA manuscripts       | Intro to the papaja package                                                                                             | Transform your prior Rmd to an APA Doc                                                            | Lab 8                                                                   | Lab 7                                                                        | Aust & Barth: 2                                                                         |
-| 5b<br/>(Oct 24)  |                                                | Citations, equations, and formatting concerns                                                                           | Prettifying your APA doc                                                                          | Lab 9<br/>DC: Data in the Tidyverse Ch 1-2                              | Lab 8                                                                        | Aust & Barth: 3-4                                                                       |
-| 6a<br/>(Oct 29)  | Tidy data 1                                    | Taming and tidying data                                                                                                 | DC: Data in the Tidyverse Ch 3                                                                    | Lab 10 (DC: Data in the Tidyverse Ch 3)                                 | Lab 9<br/>DC: Data in the Tidyverse Ch 1-2                                   | R4DS12<br/>Wickham (2014): http://www.jstatsoft.org/v59/i10/paper<br/>MD 4.1 - 4.2; 4.4 |
-| 6b<br/>(Oct 31)  |                                                | Taming variables                                                                                                        | DC: Data in the Tidyverse Ch 4                                                                    | Lab 11 (DC: Data in the Tidyverse Ch 4)<br/>DC: Categorical Data Ch 1-3 | Lab 10 (DC: Data in the Tidyverse Ch 3)                                      | R4DS 14, 16                                                                             |
-|  7a<br/>(Nov 5)  | Taming unwieldy variables                      | Taming variables (Part 2)                                                                                               | DC: Categorical Data case study                                                                   | Lab 12 (DC: Categorical Data Ch 4)                                      | Lab 11 (DC: Data in the Tidyverse Ch 4)<br/>Categorical Data DC 1-3          | R4DS 15                                                                                 |
-|  7b<br/>(Nov 7)  |                                                | Work day: (import + tame + tidy)                                                                                        |                                                                                                   |                                                                         | Lab 12 (DC: Categorical Data Ch 4)                                           |                                                                                         |
-| 8a<br/>(Nov 12)  | Exploratory data analysis                      | Exploratory data analysis / Review dplyr & ggplot2                                                                      | EDA case study                                                                                    | Lab 13                                                                  |                                                                              | R4DS 7                                                                                  |
-| 8b<br/>(Nov 14)  |                                                | Work day                                                                                                                |                                                                                                   |                                                                         | Lab 13<br/>Final Project Data Script Draft                                   |                                                                                         |
-| 9a<br/>(Nov 19)  | Review and work week                           | RMD slides, review, and more GitHub                                                                                     | Publish slides in GH                                                                              | Lab 14                                                                  |                                                                              |                                                                                         |
-| 9b<br/>(Nov 21)  |                                                | Looking forward to Course 2 & Work Day                                                                                  |                                                                                                   |                                                                         | Lab 14<br/>**Peer Review Final Project Data Script**                         |                                                                                         |
-| 10a<br/>(Nov 26) | Final Presentations                            | Student Presentations 1                                                                                                 |                                                                                                   |                                                                         | **Final project slides (published)**                                         |                                                                                         |
-| 10b<br/>(Nov 28) |                                                | Student Presentations 2                                                                                                 |                                                                                                   |                                                                         |                                                                              |                                                                                         |
-|        11        | No class: Final papers due                     |                                                                                                                         |                                                                                                   |                                                                         | **Final Project**                                                            |                                                                                         |
-|                  |                                                |                                                                                                                         |                                                                                                   |                                                                         |                                                                              |                                                                                         |
+| **Week** | **Theme**                                         | **Topics**                                                | **Assignment Assigned**                  | **Assignment Due**                       | **Reading**                                                         |
+|----------|---------------------------------------------------|-----------------------------------------------------------|------------------------------------------|------------------------------------------|---------------------------------------------------------------------|
+| 1a       | Data Types 1                                      | vectors, matrices, lists, data frames                     | DC: Introduction to R                    | -                                        | http://adv-r.had.co.nz/Data-structures.html                         |
+| 1b       | Data Types 2                                      | factors                                                   | DC: Intermediate R 1-2                   | DC: Introduction to R                    | http://adv-r.had.co.nz/Data-structures.html                         |
+| 2a       | Introduction to iteration 1                       | for loops and the apply functions                         | DC: Intermediate R 3-5                   | DC: Intermediate R 1-2                   | https://www.datacamp.com/community/tutorials/tutorial-on-loops-in-r |
+| 2b       | Introduction to iteration 2                       | purrr: map, map_df, map_dbl, map_chr, map_lgl, map_int    | CW Challenges                            | DC: Intermediate R 3-5                   | https://github.com/jenniferthompson/RLadiesIntroToPurrr             |
+| 3a       | Introduction to iteration 3                       | purrr: map2, and friends                                  | DC: purrr course (To be launched)        | CW Challenges                            | https://github.com/jenniferthompson/RLadiesIntroToPurrr             |
+| 3b       | Introduction to iteration 4                       | tidyr::crossing(), purrr::safely()                        | DC: purrr course (To be launched)        | DC: purrr course (To be launched)        | https://colinfay.me/purrr-adverb-tidyverse/                         |
+| 4a       | Nesting and unnesting data                        | purrr::nest and purrr::unnest                             | DC: second purrr course (To be launched) | DC: purrr course (To be launched)        | http://r4ds.had.co.nz/many-models.html                              |
+| 4b       | Fitting multiple models                           | purrr with broom                                          | DC: ML in the Tidyverse 1                | DC: second purrr course (To be launched) | http://r4ds.had.co.nz/many-models.html                              |
+| 5a       | Introduction to lists (and data frames as lists)  | Nesting of URLs, html code with rvest with purrr          | DC: ML in the Tidyverse 2                | DC: ML in the Tidyverse 1                | http://r4ds.had.co.nz/lists.html                                    |
+| 5b       | fs package, batch load data, and map_df           | Loading in data, understanding directory architecture     | purrr project                            | DC: ML in the Tidyverse 2                | https://www.tidyverse.org/articles/2018/01/fs-1.0.0/                |
+| 6a       | Writing functions 1                               | The basics of writing functions to reduce copying of code | DC: Hadley & Charlotte 1-2               | First checkin on purrr project           | http://r4ds.had.co.nz/functions.html                                |
+| 6b       | Writing functions 2                               | Making tweaks to functions to improve readability and use | Continue on purrr project                | DC: Hadley & Charlotte 1-2               | https://swcarpentry.github.io/r-novice-inflammation/02-func-R/      |
+| 7a       | Putting it all together: Functional Programming 1 | Review lapply, functions, anonymous functions             | DC: Hadley & Charlotte 3-5               | purrr project due                        | http://adv-r.had.co.nz/Functional-programming.html                  |
+| 7b       | Putting it all together: Functional Programming 2 | Closures, mutable states                                  | DC: Mine shiny 1-2, Final project        | DC: Hadley & Charlotte 3-5               | http://adv-r.had.co.nz/Functional-programming.html                  |
+| 8a       | Shiny 1                                           | Basics of shiny: server and ui                            | DC: Mine shiny 3-4                       | DC: Mine shiny 1-2                       | https://shiny.rstudio.com/                                          |
+| 8b       | Shiny 2                                           | Reactive programming, customization                       | DC: Dean shiny 1-2                       | DC: Mine shiny 3-4                       | https://shiny.rstudio.com/                                          |
+| 9a       | Shiny 3                                           | Shiny review                                              | DC: Dean shiny 3-4                       | DC: Dean shiny 1-2                       | https://shiny.rstudio.com/                                          |
+| 9b       | Shiny 4                                           | Interactivity                                             | Work on final project                    | DC: Dean shiny 3-4                       | https://shiny.rstudio.com/                                          |
+| 10a      | Finishing projects                                |                                                           |                                          |                                          |                                                                     |
+| 10b      | Finishing projects                                |                                                           |                                          |                                          |                                                                     |
+
+The final project will likely take one of three forms: R Markdown website, a reproducible document showing learning throughout the course, or a Shiny app.
 
 # Assignments 
 As outlined in the table above, most class meetings will include a lab. All 
@@ -100,8 +100,9 @@ The DataCamp platform will also be used for additional homework assignments,
 and the course will conclude with a final project. More detail about each is 
 provided below.
 
-## Homework (225 points; 48%)
+## Homework (XXX points; XX%)
  
+ <!--
 ### Labs (140 points)
 There are 14 labs during the course, which must be submitted to the instructor
 prior to the start of the following class. These labs will be scored on a "best
@@ -114,8 +115,9 @@ is part of the "best honest effort", and can result in full credit for an
 assignment even if the the work is not fully complete. **If the assignment is
 not complete, and the student has not contacted the instructor for help or
 visited office hours, it is likely to result is a score of zero**.
+-->
 
-### DataCamp Chapters (85 points)
+### DataCamp Chapters (XX points)
 DataCamp is an excellent resource to  get additional instruction and/or go 
 more in-depth on any of the topics covered in this class. There are also some 
 topics that we will not have the time to cover in much detail, and DataCamp 
@@ -124,7 +126,14 @@ supplemental support, select chapters will be assigned and scored as part of
 homework, at **five points per chapter**. A total of 17 chapters will be
 assigned (note that many of these chapters are very brief).
 
-## Final Project (200 points; 43%)
+## Final Project (XXX points; XX%)
+
+**To be finalized with Daniel**
+
+@datalorax: Will students be expected to be using their own research data by
+this point in the curriculum? How broad do you want this to be in terms of what students
+can do?
+
 The final project in this class is a group project, requiring students use a 
 “real world” dataset to write, essentially, a miniature manuscript, including 
 an introduction (paragraph or two), methods, results, and discussion (again, 
@@ -145,7 +154,8 @@ assigned during the first class, and **groups must be finalized by the end of
 Week 2** (at which point students who have not self-selected into groups will 
 be randomly assigned).
 
-### Outline (15 points)
+<!--
+### Outline (XX points)
 A basic outline of the final project is due at the end of Week 5. The outline 
 should include a description of the data to be used, a discussion of what 
 preparatory work will need to be done and how the requirements of the final 
@@ -211,6 +221,8 @@ commits, I will dock points from that individual. There should be numerous
 commits by each author, and they should be roughly even in terms of
 contribution activity (which GitHub has metrics to track, both in terms of the
 number of commits as well as the number of lines modified).
+
+-->
 
 # Grading Components
 |  **Lower percent** |**Lower point range**  | **Grade** | **Upper point range**  | **Upper percent**|
