@@ -46,7 +46,7 @@ All course readings are freely available online or will be provided by the
 instructor. 
 
 ## Books (required)
-* Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*.
+* Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*. [@datalorax, not sure if this will be needed for this course?]
 * Ismay, C. and Kim, A. Y. (2018). *[ModernDive: An introduction to statistical and data sciences via R](http://www.moderndive.com)*.
 * Wickham, H. and Grolemund, G. (2017). *[R for data science](http://r4ds.had.co.nz)*. Sebastopol, CA: O'Reilly. 
 	+ Freely available online in the link above. A full-color paper copy is also [available from Amazon](http://amzn.to/2aHLAQ1) for (currently) \$18.17.
