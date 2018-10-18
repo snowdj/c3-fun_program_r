@@ -19,7 +19,7 @@ This is the third course in a sequence of courses that will eventually lead to
 a *data science in educational research* specialization. This course will be taught
 through [R](https://cran.r-project.org), a free and open-source statistical
 computing environment. This course, in particular, will rely heavily on building
-on the first two courses using [RStudio]. Here the focus is on becoming
+on the first two courses using RStudio. Here the focus is on becoming
 a better programmer with R and improving workflows in statistical computing with R.
 Students will continue to work with the [tidyverse](https://www.tidyverse.org) 
 suite of packages mostly using the {purrr} package, while
