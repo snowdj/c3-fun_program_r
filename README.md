@@ -130,10 +130,7 @@ assigned (note that many of these chapters are very brief).
 
 **To be finalized with Daniel**
 
-@datalorax: Will students be expected to be using their own research data by
-this point in the curriculum? How broad do you want this to be in terms of what students
-can do?
-
+<!--
 The final project in this class is a group project, requiring students use a 
 “real world” dataset to write, essentially, a miniature manuscript, including 
 an introduction (paragraph or two), methods, results, and discussion (again, 
@@ -153,6 +150,7 @@ Students are required to work in groups of 2-4 people. The final assignment is
 assigned during the first class, and **groups must be finalized by the end of 
 Week 2** (at which point students who have not self-selected into groups will 
 be randomly assigned).
+-->
 
 <!--
 ### Outline (XX points)
