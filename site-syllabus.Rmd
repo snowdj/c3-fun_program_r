@@ -157,7 +157,8 @@ above, while the former is best suited for a blog post or, perhaps preferably,
 a series of blog posts. Note that you could also easily combine formats - e.g., 
 a blog post that includes a shiny app or a dashboard.
 
-### Outline (10 points; 5%; **Due February 6**)
+### Outline (10 points; 5%)
+##### Due by 10:00 am, May 1
 At the end of Week 5, you must include a proposal of your final project. It 
 should specifically identify:
 
@@ -169,11 +170,13 @@ should specifically identify:
   your final project will address all the grading requirements)
 
 ### Draft Data Preparation Script (20 points)
+##### Due by 10:00 am, May 27
 At the end of Week 8, you must have a draft of the data preparation complete, 
 including moving the data from its raw to tidy form and a variety of 
 exploratory data visualizations.
 
 ### Peer Review of Data Preparation Script (20 points)
+##### Due by 10:00 am, June 3
 Following the submission of the data preparation scripts, you will be assigned 
 to review your peers code. The purpose of this exercise is to learn from each 
 other. Programming is an immensely open-ended enterprise and there are lots of 
@@ -190,6 +193,7 @@ code, will result in an immediate score of zero. Be constructive in your
 feedback. Be kind. We are all learning.
 
 ### Final product grading (100 points)
+##### Due by 11:59 PM, June 12
 Below are the required components of the final project and the points associated 
 with each component. Note that it is assumed that in order to meet all 
 requirements of the final projects some the use cases may be a bit artificial.
