@@ -14,6 +14,26 @@ output:
 | 3      | Writing Functions 1                | 5/8/19       | 5/15/19 | 
 | 4      | Writing Functions 2                | 5/15/19      | 5/22/19 | 
 
+# DataCamp
+
+One complete course is required. You may choose among any of the following, and
+the due dates depend upon which course you select (to align with the topic
+coverage). You may complete one course in each section for up to 10 points 
+extra credit.
+
+#### First 5 week DataCamp courses
+* [Intermediate R](https://www.datacamp.com/courses/intermediate-r)
+* [Foundations of functional programming with purrr](https://www.datacamp.com/courses/foundations-of-functional-programming-with-purrr)
+* [Intermediate functional programming with purrr](https://www.datacamp.com/courses/intermediate-functional-programming-with-purrr)
+* [Machine learning in the tidyverse](https://www.datacamp.com/courses/machine-learning-in-the-tidyverse)
+
+#### Second 5 week DataCamp courses
+* [Writing functions in R](https://www.datacamp.com/courses/writing-functions-in-r)
+* [Building web applications in R with Shiny](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny)
+* [Building web applications in R with Shiny: Case studies](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny-case-studies)
+* [Developing R packages](https://www.datacamp.com/courses/developing-r-packages)
+* [Writing efficient R code](https://www.datacamp.com/courses/writing-efficient-r-code)
+
 # Midterm
 *Assigned*: 4/22/19
 *Due*: 5/6/19

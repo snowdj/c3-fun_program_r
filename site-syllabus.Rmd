@@ -100,6 +100,7 @@ DataCamp module in each half of the term.
 * [Building web applications in R with Shiny](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny)
 * [Building web applications in R with Shiny: Case studies](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny-case-studies)
 * [Developing R packages](https://www.datacamp.com/courses/developing-r-packages)
+* [Writing efficient R code](https://www.datacamp.com/courses/writing-efficient-r-code)
 
 ## Extra Credit
 This heading is just to explicit. As mentioned in the previous paragraph, up to
