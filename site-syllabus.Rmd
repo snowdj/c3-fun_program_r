@@ -104,7 +104,7 @@ DataCamp module in each half of the term.
 
 ## Extra Credit
 This heading is just to explicit. As mentioned in the previous paragraph, up to
-10 points extra credit can be earned for completing a DataCamp module during
+5 points extra credit can be earned for completing a DataCamp module during
 both the first and last 5 weeks of the term.
 
 ## Midterm (50 points; 20%)

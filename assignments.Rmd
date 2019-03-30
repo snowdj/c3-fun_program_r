@@ -17,11 +17,11 @@ output:
 
 # DataCamp
 #### 4% of your overall grade
-#### 10 points total (10 points available for extra credit)
+#### 10 points total (5 points available for extra credit)
 
 One complete course is required. You may choose among any of the following, and
 the due dates depend upon which course you select (to align with the topic
-coverage). You may complete one course in each section for up to 10 points 
+coverage). You may complete one course in each section for up to 5 points 
 extra credit.
 
 #### First 5 week DataCamp courses 
