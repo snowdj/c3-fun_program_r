@@ -23,6 +23,11 @@
   color: #484B58;
 }
 
+code {
+  background-color: #444448 !important;
+  color: #90D6CA !important;
+}
+
 html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
@@ -356,7 +361,7 @@ textarea {
 }
 
 a {
-    color: #eb6864;
+    color: #F68B88;
     text-decoration: none
 }
 
@@ -877,8 +882,8 @@ samp {
 code {
     padding: 2px 4px;
     font-size: 90%;
-    color: #c7254e;
-    background-color: #f9f2f4;
+    /*color: #c7254e;*/
+    /*background-color: #f9f2f4;*/
     border-radius: 4px
 }
 
@@ -917,9 +922,9 @@ pre {
 pre code {
     padding: 0;
     font-size: inherit;
-    color: inherit;
+    /*color: inherit;*/
     white-space: pre-wrap;
-    background-color: transparent;
+    /*background-color: transparent;*/
     border-radius: 0
 }
 
