@@ -58,7 +58,7 @@ task using more efficient and/or readable approaches.
 |**Component** | **Points**| **Due** | 
 |:-------------|:----------|:--------| 
 | Groups Finalized | 0 | 4/10/19|
-| [Outline](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#outline_(10_points;_5%;_due_february_6))  | 10 | 5/1/19 | 
+| [Outline](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#outline_(10_points;_5%))  | 10 | 5/1/19 | 
 | [Draft](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#draft_data_preparation_script_(20_points)) |  20 | 5/27/19 | 
 | [Peer review](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#peer_review_of_data_preparation_script_(20_points)) | 20 | 6/3/19 | 
 | [Product](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#final_product_grading_(100_points)) |  100 | 6/12/19 (11:59 pm) | 
