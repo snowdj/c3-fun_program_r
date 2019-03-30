@@ -181,7 +181,7 @@ above, while the former is best suited for a blog post or, perhaps preferably,
 a series of blog posts. Note that you could also easily combine formats - e.g., 
 a blog post that includes a shiny app or a dashboard.
 
-### Outline (10 points; 5%; **Due February 6**)
+### Outline (10 points; 5%; **Due May 1**)
 At the end of Week 5, you must include a proposal of your final project. It 
 should specifically identify:
 
