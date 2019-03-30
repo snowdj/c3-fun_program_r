@@ -17,6 +17,7 @@
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css
  */
 
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
 
 .tocify ul, .tocify li {
   /*background-color: #3f4047;*/
@@ -26,6 +27,7 @@
 code {
   background-color: #444448 !important;
   color: #90D6CA !important;
+  font-family: 'Inconsolata', monospace !important;
 }
 
 html {
