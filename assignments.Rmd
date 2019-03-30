@@ -10,7 +10,7 @@ output:
 |**Lab** | **Topic**                          | **Assigned** | **Due** | 
 |:------:| :----------------------------------| :------------| :-------| 
 | 1      | Iterations with Base R             | 4/10/19      | 4/17/19 | 
-| 2      | Iterations with {purrr}            | 4/17/19      | 1/21/19 |
+| 2      | Iterations with {purrr}            | 4/17/19      | 4/24/19 |
 | 3      | Writing Functions 1                | 5/8/19       | 5/15/19 | 
 | 4      | Writing Functions 2                | 5/15/19      | 5/22/19 | 
 
