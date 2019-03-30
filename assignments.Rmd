@@ -6,7 +6,8 @@ output:
 ---
 
 # Labs
-
+#### 16% of your overall grade
+#### 40 points total; 10 points each
 |**Lab** | **Topic**                          | **Assigned** | **Due** | 
 |:------:| :----------------------------------| :------------| :-------| 
 | 1      | Iterations with Base R             | 4/10/19      | 4/17/19 | 
@@ -15,6 +16,8 @@ output:
 | 4      | Writing Functions 2                | 5/15/19      | 5/22/19 | 
 
 # DataCamp
+#### 4% of your overall grade
+#### 10 points total (10 points available for extra credit)
 
 One complete course is required. You may choose among any of the following, and
 the due dates depend upon which course you select (to align with the topic
@@ -37,18 +40,28 @@ extra credit.
 * [Writing efficient R code](https://www.datacamp.com/courses/writing-efficient-r-code)
 
 # Midterm
-*Assigned*: 4/22/19
-*Due*: 5/6/19
+#### 20% of your overall grade
+#### 50 points total
+
+**Assigned**: 4/22/19
+
+**Due**: 5/6/19
+
 More details will be available later in the term, but a midterm will be 
 assigned, which will likely ask you to rewrite code to accomplish a similar 
 task using more efficient and/or readable approaches.
 
 # Final Project
+#### 60% of your overall grade
+#### 150 points total
 
-|**Component** | **Due** | 
-|:-------------|:--------| 
-| Groups Finalized | 4/10/19|
-| [Outline](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#outline_(10_points;_5%;_due_february_6))  | 5/1/19 | 
-| [Draft](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#draft_data_preparation_script_(20_points))        | 5/27/19 | 
-| [Peer review](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#peer_review_of_data_preparation_script_(20_points))  | 6/3/19 | 
-| [Product](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#final_product_grading_(100_points))     | 6/12/19 (11:59 pm) | 
+|**Component** | **Points**| **Due** | 
+|:-------------|:----------|:--------| 
+| Groups Finalized | 0 | 4/10/19|
+| [Outline](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#outline_(10_points;_5%;_due_february_6))  | 10 | 5/1/19 | 
+| [Draft](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#draft_data_preparation_script_(20_points)) |  20 | 5/27/19 | 
+| [Peer review](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#peer_review_of_data_preparation_script_(20_points)) | 20 | 6/3/19 | 
+| [Product](https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#final_product_grading_(100_points)) |  100 | 6/12/19 (11:59 pm) | 
+
+
+
