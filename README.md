@@ -193,18 +193,32 @@ should specifically identify:
   your final project will address all the grading requirements)
 
 ### Draft Data Preparation Script (20 points)
-At the end of Week 8, you must have a draft of the data preparation complete, 
-including moving the data from its raw to tidy form and a variety of 
-exploratory data visualizations.
+##### Due by 10:00 am, May 27
+By the beginning of Week 9, you must have a draft of your final project
+complete, with the vast majority, if not all, of the components listed in the
+grading criteria present. This script is expected to still be a work in 
+progress and it is expected there will still be pieces you are working on. But
+the majority should be there. This script will be distributed to your peers 
+for feedback.
 
 ### Peer Review of Data Preparation Script (20 points)
+##### Due by 10:00 am, June 3
 Following the submission of the data preparation scripts, you will be assigned 
 to review your peers code. The purpose of this exercise is to learn from each 
 other. Programming is an immensely open-ended enterprise and there are lots of 
 winding paths that all ultimately end up at the same destination. During your 
-peer review, you must note (a) at least three areas of strength, (b) at least 
-one thing you learned from reviewing their script, and (c) at least one and no
-more than three areas for improvement. 
+peer review, you must note the following three elements.
+
+1. At least three areas of strength
+
+2. At least one thing you learned from reviewing their script
+
+3. At least one and no more than three areas for improvement 
+
+To conduct your review, you are required to fork the group's repository, 
+provide a comprehensive review with commits on your fork, then submit a pull
+request so the group can easily see the changes you made and choose whether to
+merge them or not.
 
 Making your code publicly available can feel daunting. The purpose of this 
 portion of the final project is to help us all learn from each other, not to 
@@ -214,12 +228,13 @@ code, will result in an immediate score of zero. Be constructive in your
 feedback. Be kind. We are all learning.
 
 ### Final product grading (100 points)
-Below are the required components of the final project and the points associated 
-with each component. Note that it is assumed that in order to meet all 
-requirements of the final projects some the use cases may be a bit artificial.
-This is completely acceptable. It is important to recognize that this is a final
-project for a class, not a "real" product, and these elements must be present
-to demonstrate that you learned the content.
+##### Due by 11:59 PM, June 12
+Below are the required components of the final project and the points
+associated with each component. Note that it is assumed that in order to meet 
+all requirements of the final projects some the use cases may be a bit 
+artificial. This is completely acceptable. It is important to recognize that
+this is a final project for a class, not a "real" product, and these elements
+must be present to demonstrate that you learned the content.
 
 * No code is used repetitively (no more than twice) [10 points]
 * More than one variant of `purrr::map` is used [10 points]
