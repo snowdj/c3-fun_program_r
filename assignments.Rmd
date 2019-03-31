@@ -8,6 +8,12 @@ output:
 # Labs
 #### 16% of your overall grade
 #### 40 points total; 10 points each
+
+You are encouraged to work in partners or teams of up to 4 people on labs.
+However, should you choose to work in teams, labs **must** be submitted as a
+shared GitHub repository. I will evaluate the commits made by team members
+before assigning final points.
+
 |**Lab** | **Topic**                          | **Assigned** | **Due** | 
 |:------:| :----------------------------------| :------------| :-------| 
 | 1      | Iterations with Base R             | 4/10/19      | 4/17/19 | 
