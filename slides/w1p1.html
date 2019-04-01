@@ -472,7 +472,7 @@ of vectors.
 
 ```r
 integer &lt;- c(5L, 7L, 3L, 94L) # L explicitly an integer, not double
-double &lt;- c(3.27, 8.41)
+double &lt;- c(3.27, 8.41, Inf, -Inf)
 logical &lt;- c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE)
 character &lt;- c("red", "orange", "yellow", "green", "blue", "violet", "rainbow")
 ```
@@ -591,11 +591,140 @@ c(7L, 3.25) %&gt;%
 ```
 
 ---
+# Pop quiz
+Without actually running the code, talk with your neighbor: Which will each of
+the following coerce to?
+
+
+```r
+c(1.25, TRUE, 4L)
+c(1L, FALSE)
+c(7L, 6.23, "eight")
+c(TRUE, 1L, 0L, "False")
+```
+
+---
+# Answers
+
+
+```r
+typeof(c(1.25, TRUE, 4L))
+```
+
+```
+## [1] "double"
+```
+
+```r
+typeof(c(1L, FALSE))
+```
+
+```
+## [1] "integer"
+```
+
+```r
+typeof(c(7L, 6.23, "eight"))
+```
+
+```
+## [1] "character"
+```
+
+```r
+typeof(c(TRUE, 1L, 0L, "False"))
+```
+
+```
+## [1] "character"
+```
+
+---
+# Lists
+* Lists are vectors, but not *atomic* vectors
+
+* Fundamental difference - each element can be a different type
+
+
+```r
+list("a", 7L, 3.25, TRUE)
+```
+
+```
+## [[1]]
+## [1] "a"
+## 
+## [[2]]
+## [1] 7
+## 
+## [[3]]
+## [1] 3.25
+## 
+## [[4]]
+## [1] TRUE
+```
+
+---
+# Lists
+
+.pull-left[
+
+* Technically, each element of the list is an atomic vector
+
+* The prior example included all *scalar* vectors
+
+* Lists do not require all elements to be the same length
+
+]
+
+
+.pull-right[
+
+
+```r
+list(c("a", "b", "c"),
+     rnorm(5), 
+     c(7L, 2L),
+     c(TRUE, TRUE, FALSE, TRUE))
+```
+
+```
+## [[1]]
+## [1] "a" "b" "c"
+## 
+## [[2]]
+## [1]  0.1309648 -1.1591967  1.4151961 -0.3267686 -0.5669168
+## 
+## [[3]]
+## [1] 7 2
+## 
+## [[4]]
+## [1]  TRUE  TRUE FALSE  TRUE
+```
+]
+
+---
+# Summary
+* Atomic vectors must all be the same type
+
+  + implicit coercion occurs if not (and you haven't specified the coercion
+  explicitly)
+
+* Lists are also vectors, but not atomic vectors
+  
+  + Each element can be of a different type and length
+
+  + Incredibly flexible, but often a little more difficult to get the hang of
+
+---
 # Next time
 * More on data types
-* Subsetting
+  + Missing values
+  + Subsetting
+  + Attributes
+  + More on coercion (good to be fluent)
 * Lists
-* More on coercion
+
 
 ### Any lingering questions?
     </textarea>

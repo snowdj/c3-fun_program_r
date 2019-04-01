@@ -464,7 +464,7 @@ of vectors.
 
 ```{r vector-types}
 integer <- c(5L, 7L, 3L, 94L) # L explicitly an integer, not double
-double <- c(3.27, 8.41)
+double <- c(3.27, 8.41, Inf, -Inf)
 logical <- c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE)
 character <- c("red", "orange", "yellow", "green", "blue", "violet", "rainbow")
 ```
@@ -522,11 +522,83 @@ c(7L, 3.25) %>%
 ```
 
 ---
+# Pop quiz
+Without actually running the code, talk with your neighbor: Which will each of
+the following coerce to?
+
+```{r imp-coerce2-echo, eval = FALSE}
+c(1.25, TRUE, 4L)
+c(1L, FALSE)
+c(7L, 6.23, "eight")
+c(TRUE, 1L, 0L, "False")
+```
+
+---
+# Answers
+
+```{r imp-coerce2-eval}
+typeof(c(1.25, TRUE, 4L))
+typeof(c(1L, FALSE))
+typeof(c(7L, 6.23, "eight"))
+typeof(c(TRUE, 1L, 0L, "False"))
+```
+
+---
+# Lists
+* Lists are vectors, but not *atomic* vectors
+
+* Fundamental difference - each element can be a different type
+
+```{r list1}
+list("a", 7L, 3.25, TRUE)
+```
+
+---
+# Lists
+
+.pull-left[
+
+* Technically, each element of the list is an atomic vector
+
+* The prior example included all *scalar* vectors
+
+* Lists do not require all elements to be the same length
+
+]
+
+
+.pull-right[
+
+```{r list2}
+list(c("a", "b", "c"),
+     rnorm(5), 
+     c(7L, 2L),
+     c(TRUE, TRUE, FALSE, TRUE))
+```
+]
+
+---
+# Summary
+* Atomic vectors must all be the same type
+
+  + implicit coercion occurs if not (and you haven't specified the coercion
+  explicitly)
+
+* Lists are also vectors, but not atomic vectors
+  
+  + Each element can be of a different type and length
+
+  + Incredibly flexible, but often a little more difficult to get the hang of
+
+---
 # Next time
 * More on data types
-* Subsetting
+  + Missing values
+  + Subsetting
+  + Attributes
+  + More on coercion (good to be fluent)
 * Lists
-* More on coercion
+
 
 ### Any lingering questions?
 
