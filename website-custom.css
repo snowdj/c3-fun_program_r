@@ -19,14 +19,38 @@
 
 @import url('https://fonts.googleapis.com/css?family=Inconsolata');
 
+.hljs-number {
+  color: #90D6CA;
+}
+
+.hljs-comment {
+  color: #95959A;
+  font-style: italic;
+}
+
+.hljs-keyword {
+  color: #75ABD4;
+  font-weight: bold;
+}
+
+.hljs-string {
+  color: #F7FF90;
+}
+
+
+
 .tocify ul, .tocify li {
   /*background-color: #3f4047;*/
   color: #484B58;
 }
 
+pre:not([class]) {
+    background-color: #444448;
+  }
+
 code {
   background-color: #444448 !important;
-  color: #90D6CA !important;
+  color: #90D6CA;
   font-family: 'Inconsolata', monospace !important;
 }
 
@@ -916,7 +940,7 @@ pre {
     word-break: break-all;
     word-wrap: break-word;
     color: #333333;
-    background-color: #f5f5f5;
+    background-color: #444448;
     border: 1px solid #cccccc;
     border-radius: 4px
 }
@@ -924,7 +948,7 @@ pre {
 pre code {
     padding: 0;
     font-size: inherit;
-    /*color: inherit;*/
+    color: #fff;
     white-space: pre-wrap;
     /*background-color: transparent;*/
     border-radius: 0
