@@ -214,7 +214,7 @@ m
 ```
 
 --
-* is this the result what you expected?
+* is this the result you expected?
 
 ---
 # Alternative creation
