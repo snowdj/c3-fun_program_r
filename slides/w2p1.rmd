@@ -640,15 +640,3 @@ vapply(airquality, function(x) {
 --
 	+ `vapply` is strict, and will only return the type specified
 
----
-# Any time left?
-Use the "airquality" dataset, which is part of base R. 
-* Split it by `Month`
-
-* Use a `for` loop to calculate the mean `Ozone` by month
-
-	+ Replicate this calculation with `lapply`, `sapply`, and `vapply`
-
-* Produce a plot showing the relation between `Ozone` and `Solar.R` for each month.
-
-* Use a `for` loop to save the plots to a folder on your computer
