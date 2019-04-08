@@ -215,7 +215,7 @@ str(simulated)
 
 ```{r simulated-loop}
 for(i in seq_along(simulated)) {
-	simulated[[i]] <- rnorm(100, 0, i) # note use of `[[`
+	simulated[[i]] <- rnorm(100, 0, increments[i]) # note use of `[[`
 }
 str(simulated)
 ```
@@ -288,7 +288,7 @@ plot(densities[[1]])
 * Finally, loop through all the other densities
 
 ```{r all-densities, fig.height = 5}
-plot(densities[[1]],xlim = c(-60, 60))
+plot(densities[[1]],xlim = c(-20, 20))
 
 for(i in seq(2, length(densities))) {
 	lines(x = densities[[i]]$x, 
@@ -358,7 +358,7 @@ increments <- seq(1, 5, by = 0.2)
 simulated <- vector("list", length(increments))
 
 for(i in seq_along(simulated)) {
-	simulated[[i]] <- rnorm(10, 0, i) # note use of `[[`
+	simulated[[i]] <- rnorm(10, 0, increments[i]) # note use of `[[`
 }
 
 simulated
