@@ -10,8 +10,6 @@ navbar:
   right:
   - text: Syllabus
     href: site-syllabus.html
-  - text: DataCamp
-    href: https://www.datacamp.com/enterprise/functional-programming-with-r
   - icon: fa-github
     href: https://github.com/uo-datasci-specialization/c3-fun_program_r
 output:

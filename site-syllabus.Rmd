@@ -60,14 +60,6 @@ instructor.
 3. Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*.
 
 ## Resources
-### DataCamp
-We have a class subscription to [DataCamp](https://www.datacamp.com). This means all the courses
-they offer (which is a lot) are available to you. I encourage you to explore the website and
-play around. There are **far more** topics covered by DataCamp than we will cover in this
-course or this five-course specialization.
-
-Our DataCamp website is located [here](https://www.datacamp.com/enterprise/functional-programming-with-r). 
-
 # Assignments 
 ## Labs (40 points; 16%)
 There are 4 labs during the course. All labs will be scored on a "best
@@ -82,30 +74,9 @@ not complete, and the student has not contacted the instructor for help or
 visited office hours, it is likely to result is a partial credit score or a 
 zero**. Labs submitted late will be docked by 30% (3 points).
 
-## DataCamp (10 points; 4%)
-As mentioned above, we will utilize DataCamp for this course. You must complete
-at least one DataCamp course during the term. You may select any of the 
-following courses, which I have split into the first and last 5 weeks of the 
-term. You may earn up to 10 points extra credit by completing at least one
-DataCamp module in each half of the term.
-
-#### First 5 week DataCamp courses
-* [Intermediate R](https://www.datacamp.com/courses/intermediate-r)
-* [Foundations of functional programming with purrr](https://www.datacamp.com/courses/foundations-of-functional-programming-with-purrr)
-* [Intermediate functional programming with purrr](https://www.datacamp.com/courses/intermediate-functional-programming-with-purrr)
-* [Machine learning in the tidyverse](https://www.datacamp.com/courses/machine-learning-in-the-tidyverse)
-
-#### Second 5 week DataCamp courses
-* [Writing functions in R](https://www.datacamp.com/courses/writing-functions-in-r)
-* [Building web applications in R with Shiny](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny)
-* [Building web applications in R with Shiny: Case studies](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny-case-studies)
-* [Developing R packages](https://www.datacamp.com/courses/developing-r-packages)
-* [Writing efficient R code](https://www.datacamp.com/courses/writing-efficient-r-code)
-
 ## Extra Credit
-This heading is just to explicit. As mentioned in the previous paragraph, up to
-5 points extra credit can be earned for completing a DataCamp module during
-both the first and last 5 weeks of the term.
+Up to 5 points extra credit can be earned for completing a DataCamp module
+during both the first and last 5 weeks of the term.
 
 ## Midterm (50 points; 20%)
 As may be obvious from the weekly structure, this course is rather split into
@@ -259,7 +230,7 @@ Graduate: 1 credit hour = 40 hours of student engagement (3 credit hours = 120 h
 | Course attendance        |            26.5           | 20 meetings, at 80 minutes per meeting                                                                           |
 | Assigned readings        |            30.5           | Weekly readings are assigned, and are expected to take roughly as long to complete as the in-seat time per week. |
 | Final project            |            35             | Final project, as described above                                                                                |
-| Homeworks                |            28             | 4 Labs, at approximately four hours per lab spent out of class (16 hours), plus 1 DataCamp module (4 hours), plus the midterm at approximately 8 hours|
+| Homeworks                |            28             | 4 Labs, at approximately five hours per lab spent out of class (20 hours), plus the midterm at approximately 8 hours|
 | Total hours:             |            120            |                                                                                                                  |
 
 # Attendance and Absence Guidelines

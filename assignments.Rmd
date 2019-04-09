@@ -15,35 +15,12 @@ shared GitHub repository. I will evaluate the commits made by team members
 before assigning final points.
 
 |**Lab** | **Topic**                          | **Assigned** | **Due** | 
-|:------:| :----------------------------------| :------------| :-------| 
-| 1      | Iterations with Base R             | 4/10/19      | 4/17/19 | 
+|:------:| :----------------------------------| :-----------:| :------:| 
+| 1      | [Iterations with Base R](lab1.html)| 4/10/19      | 4/17/19 |
 | 2      | Iterations with {purrr}            | 4/17/19      | 4/24/19 |
 | 3      | Writing Functions 1                | 5/8/19       | 5/15/19 | 
 | 4      | Writing Functions 2                | 5/15/19      | 5/22/19 | 
 
-# DataCamp
-#### 4% of your overall grade
-#### 10 points total (5 points available for extra credit)
-
-One complete course is required. You may choose among any of the following, and
-the due dates depend upon which course you select (to align with the topic
-coverage). You may complete one course in each section for up to 5 points 
-extra credit.
-
-#### First 5 week DataCamp courses 
-##### Due by 11:59 PM, 5/6/19 
-* [Intermediate R](https://www.datacamp.com/courses/intermediate-r)
-* [Foundations of functional programming with purrr](https://www.datacamp.com/courses/foundations-of-functional-programming-with-purrr)
-* [Intermediate functional programming with purrr](https://www.datacamp.com/courses/intermediate-functional-programming-with-purrr)
-* [Machine learning in the tidyverse](https://www.datacamp.com/courses/machine-learning-in-the-tidyverse)
-
-#### Second 5 week DataCamp courses
-##### Due by 11:59 PM, 6/12/19
-* [Writing functions in R](https://www.datacamp.com/courses/writing-functions-in-r)
-* [Building web applications in R with Shiny](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny)
-* [Building web applications in R with Shiny: Case studies](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny-case-studies)
-* [Developing R packages](https://www.datacamp.com/courses/developing-r-packages)
-* [Writing efficient R code](https://www.datacamp.com/courses/writing-efficient-r-code)
 
 # Midterm
 #### 20% of your overall grade

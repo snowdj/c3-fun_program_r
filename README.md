@@ -57,15 +57,6 @@ instructor.
 	+ Freely available online in the link above. A full-color paper copy is also [available from Amazon](http://amzn.to/2aHLAQ1) for (currently) \$18.17.
 3. Bryan, J. (2018). *[Happy git and GitHub for the useR](http://happygitwithr.com)*.
 
-## Resources
-### DataCamp
-We have a class subscription to [DataCamp](https://www.datacamp.com). This means all the courses
-they offer (which is a lot) are available to you. I encourage you to explore the website and
-play around. There are **far more** topics covered by DataCamp than we will cover in this
-course or this five-course specialization.
-
-Our DataCamp website is located [here](https://www.datacamp.com/enterprise/functional-programming-with-r). 
-
 
 # Weekly Schedule (Topics, Assignments, and Readings)
 | **Week**    | **Date** | **Theme**                                      | **Assignment Assigned** | **Assignment Due**                            | **Reading**                                                                                                                                   |
@@ -80,7 +71,7 @@ Our DataCamp website is located [here](https://www.datacamp.com/enterprise/funct
 | 4b          | 4/24/19  | Batch load data, and map_df                    |                         | Lab 2                                         | [Adv R: 9.4 to 9.6](https://adv-r.hadley.nz/functionals.html)                                                                                 |
 | 5a          | 4/29/19  | Parallel and other types of iterations         |                         |                                               |                                                                                                                                               |
 | 5b          | 5/1/19   | Work day                                       |                         | Final Project Outline                         | [r4ds: 19](http://r4ds.had.co.nz/functions.html)                                                                                              |
-| 6a          | 5/6/19   | Writing functions 1                            |                         | Midterm; Deadline for DC Chapter Part 1       | https://swcarpentry.github.io/r-novice-inflammation/02-func-R/                                                                                |
+| 6a          | 5/6/19   | Writing functions 1                            |                         | Midterm                                       | https://swcarpentry.github.io/r-novice-inflammation/02-func-R/                                                                                |
 | 6b          | 5/8/19   | Lab 3                                          | Lab 3                   |                                               | [Adv R: 6.1 to 6.4](https://adv-r.hadley.nz/functions.html)                                                                                   |
 | 7a          | 5/13/19  | Writing functions 2                            |                         |                                               | *optional* [Adv R: 6.5 to 6.8](https://adv-r.hadley.nz/functions.html)                                                                        |
 | 7b          | 5/15/19  | Lab 4                                          | Lab 4                   | Lab 3                                         | [Parts](https://shiny.rstudio.com/articles/basics.html); [Build](https://shiny.rstudio.com/articles/build.html);                              |
@@ -90,7 +81,7 @@ Our DataCamp website is located [here](https://www.datacamp.com/enterprise/funct
 | 9b          | 5/29/19  | Work day                                       |                         |                                               |                                                                                                                                               |
 | 10a         | 6/3/19   | Measuring & improving performance              |                         | Peer review                                   |                                                                                                                                               |
 | 10b         | 6/5/19   | Topics beyond the course (package development) |                         |                                               |                                                                                                                                               |
-| Finals Week | 6/12/19  |                                                |                         | Final Project; Deadline for DC Chapter Part 2 |                                                                                                                                               |
+| Finals Week | 6/12/19  |                                                |                         | Final Project                                 |                                                                                                                                               |
 
 
 # Assignments 
@@ -107,29 +98,9 @@ not complete, and the student has not contacted the instructor for help or
 visited office hours, it is likely to result is a partial credit score or a 
 zero**. Labs submitted late will be docked by 30% (3 points).
 
-## DataCamp (10 points; 4%)
-As mentioned above, we will utilize DataCamp for this course. You must complete
-at least one DataCamp course during the term. You may select any of the 
-following courses, which I have split into the first and last 5 weeks of the 
-term. You may earn up to 10 points extra credit by completing at least one
-DataCamp module in each half of the term.
-
-#### First 5 week DataCamp courses
-* [Intermediate R](https://www.datacamp.com/courses/intermediate-r)
-* [Foundations of functional programming with purrr](https://www.datacamp.com/courses/foundations-of-functional-programming-with-purrr)
-* [Intermediate functional programming with purrr](https://www.datacamp.com/courses/intermediate-functional-programming-with-purrr)
-* [Machine learning in the tidyverse](https://www.datacamp.com/courses/machine-learning-in-the-tidyverse)
-
-#### Second 5 week DataCamp courses
-* [Writing functions in R](https://www.datacamp.com/courses/writing-functions-in-r)
-* [Building web applications in R with Shiny](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny)
-* [Building web applications in R with Shiny: Case studies](https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny-case-studies)
-* [Developing R packages](https://www.datacamp.com/courses/developing-r-packages)
-
 ## Extra Credit
-This heading is just to explicit. As mentioned in the previous paragraph, up to
-5 points extra credit can be earned for completing a DataCamp module during
-both the first and last 5 weeks of the term.
+Up to 5 points extra credit can be earned for completing a DataCamp module 
+during both the first and last 5 weeks of the term.
 
 ## Midterm (50 points; 20%)
 As may be obvious from the weekly structure, this course is rather split into
@@ -282,7 +253,7 @@ Graduate: 1 credit hour = 40 hours of student engagement (3 credit hours = 120 h
 | Course attendance        |            26.5           | 20 meetings, at 80 minutes per meeting                                                                           |
 | Assigned readings        |            30.5           | Weekly readings are assigned, and are expected to take roughly as long to complete as the in-seat time per week. |
 | Final project            |            35             | Final project, as described above                                                                                |
-| Homeworks                |            28             | 4 Labs, at approximately four hours per lab spent out of class (16 hours), plus 1 DataCamp module (4 hours), plus the midterm at approximately 8 hours|
+| Homeworks                |            28             | 4 Labs, at approximately five hours per lab spent out of class (20 hours), plus the midterm at approximately 8 hours|
 | Total hours:             |            120            |                                                                                                                  |
 
 # Attendance and Absence Guidelines
