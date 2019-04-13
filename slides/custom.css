@@ -1,5 +1,7 @@
 .blue { color: #0074C4;}
 
+.bolder { font-weight: 900; }
+
 .major-emph-green {
   display: block;
   text-align: center;
