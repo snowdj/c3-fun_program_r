@@ -61,9 +61,7 @@ four_cyl <- filter(mpg, cyl == 4)
 ```
 
 ---
-* Next, we'll select the manufacturer, model, class, and city mpg variables, and
-filter for cases where the city miles per gallon is in the top 10% (i.e.,
-greater than or equal to the 90th percentile).
+* Next, we'll filter for cases where the city miles per gallon is in the top 10% (i.e.,greater than or equal to the 90th percentile).
 
 ```{r ninety-ptile}
 ninety <- four_cyl %>%
