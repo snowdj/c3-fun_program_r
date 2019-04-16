@@ -37,6 +37,13 @@
   color: #F7FF90;
 }
 
+.hljs-string {
+  color: #F7FF90;
+}
+
+.hljs-literal {
+  color: #F03AC3;
+}
 
 
 .tocify ul, .tocify li {
