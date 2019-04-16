@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Daniel Anderson" />
 
 
-<title>assignments.utf8.md</title>
+<title>Lab 2</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -411,111 +412,81 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">Lab 2</h1>
+<h4 class="author">Daniel Anderson</h4>
+<h4 class="date">4/10/2019</h4>
 
 </div>
 
 
-<div id="labs" class="section level1">
-<h1>Labs</h1>
-<div id="of-your-overall-grade" class="section level4">
-<h4>16% of your overall grade</h4>
+<p>This lab will be similar to Lab 1 but will focus specifically on looping with {purrr}.</p>
+<div id="part-a-multiple-models" class="section level3">
+<h3>Part A: Multiple Models</h3>
+<p>Run the code below to load the following dataset.</p>
+<pre class="r"><code>file &lt;- &quot;https://github.com/datalorax/esvis/raw/master/data/benchmarks.rda&quot;
+load(url(file))
+head(benchmarks)</code></pre>
+<pre><code>##      sid cohort     sped  ethnicity     frl     ell season reading math
+## 1 332347      1 Non-Sped Native Am. Non-FRL Non-ELL Winter     208  205
+## 2 400047      1 Non-Sped Native Am.     FRL Non-ELL Spring     212  218
+## 3 402107      1 Non-Sped      White Non-FRL Non-ELL Winter     201  212
+## 4 402547      1 Non-Sped      White Non-FRL Non-ELL   Fall     185  177
+## 5 403047      1     Sped   Hispanic     FRL  Active Winter     179  192
+## 6 403307      1     Sped   Hispanic Non-FRL Non-ELL Winter     189  188</code></pre>
+<p>These data are simulated, but represent individual student scores across seasonal benchmark screenings (administered in the fall, winter, and spring). The variables are as follows:</p>
+<ul>
+<li><code>sid</code>: student identifier</li>
+<li><code>cohort</code>: student cohort</li>
+<li><code>sped</code>: special education status of the student for the given time point</li>
+<li><code>ethnicity</code>: coded race/ethnicity of the student</li>
+<li><code>frl</code>: free or reduced price lunch eligibility for the student for the given time point</li>
+<li><code>ell</code>: English language learner status for the student for the given time point</li>
+<li><code>season</code>: season the assessment was administered</li>
+<li><code>reading</code>: student’s reading score at the given time point</li>
+<li><code>math</code>: student’s mathematics score at the given time point</li>
+</ul>
+<p>Recode season to wave with the following code</p>
+<pre class="r"><code>library(tidyverse)
+
+benchmarks &lt;- benchmarks %&gt;%
+    as_tibble() %&gt;%
+    mutate(wave = case_when(season == &quot;Fall&quot; ~ 0,
+                            season == &quot;Winter&quot; ~ 1,
+                            TRUE ~ 2))</code></pre>
+<ol style="list-style-type: decimal">
+<li><p>Fit a model of the form <code>lm(math ~ wave)</code> for each student.</p></li>
+<li><p>Plot the distribution of slopes for each student. Annotate the plot with a vertical line for the mean.</p></li>
+</ol>
 </div>
-<div id="points-total-10-points-each" class="section level4">
-<h4>40 points total; 10 points each</h4>
-<p>You are encouraged to work in partners or teams of up to 4 people on labs. However, should you choose to work in teams, labs <strong>must</strong> be submitted as a shared GitHub repository. I will evaluate the commits made by team members before assigning final points.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="center"><strong>Lab</strong></th>
-<th align="left"><strong>Topic</strong></th>
-<th align="center"><strong>Assigned</strong></th>
-<th align="center"><strong>Due</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">1</td>
-<td align="left"><a href="lab1.html">Iterations with Base R</a></td>
-<td align="center">4/10/19</td>
-<td align="center">4/17/19</td>
-</tr>
-<tr class="even">
-<td align="center">2</td>
-<td align="left"><a href="lab2.html">Iterations with {purrr}</a></td>
-<td align="center">4/17/19</td>
-<td align="center">4/24/19</td>
-</tr>
-<tr class="odd">
-<td align="center">3</td>
-<td align="left">Writing Functions 1</td>
-<td align="center">5/8/19</td>
-<td align="center">5/15/19</td>
-</tr>
-<tr class="even">
-<td align="center">4</td>
-<td align="left">Writing Functions 2</td>
-<td align="center">5/15/19</td>
-<td align="center">5/22/19</td>
-</tr>
-</tbody>
-</table>
+<div id="part-b-star-wars" class="section level3">
+<h3>Part B: Star Wars</h3>
+<p>Install and load the {repurrrsive} package</p>
+<pre class="r"><code>install.packages(&quot;repurrrsive&quot;)
+library(repurrrsive)</code></pre>
+<p>You now should have access to all the data you’ll need for the following.</p>
+<ol style="list-style-type: decimal">
+<li><p>Use the <code>sw_films</code> list to identify how many characters were represented in each film.</p></li>
+<li><p>Use the <code>sw_species</code> list to (a) identify species that have known hair colors and (b) identify what those hair colors are.</p></li>
+</ol>
 </div>
-</div>
-<div id="midterm" class="section level1">
-<h1>Midterm</h1>
-<div id="of-your-overall-grade-1" class="section level4">
-<h4>20% of your overall grade</h4>
-</div>
-<div id="points-total" class="section level4">
-<h4>50 points total</h4>
-<p><strong>Assigned</strong>: 4/22/19</p>
-<p><strong>Due</strong>: 5/6/19</p>
-<p>More details will be available later in the term, but a midterm will be assigned, which will likely ask you to rewrite code to accomplish a similar task using more efficient and/or readable approaches.</p>
-</div>
-</div>
-<div id="final-project" class="section level1">
-<h1>Final Project</h1>
-<div id="of-your-overall-grade-2" class="section level4">
-<h4>60% of your overall grade</h4>
-</div>
-<div id="points-total-1" class="section level4">
-<h4>150 points total</h4>
-<table>
-<thead>
-<tr class="header">
-<th align="left"><strong>Component</strong></th>
-<th align="left"><strong>Points</strong></th>
-<th align="left"><strong>Due</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Groups Finalized</td>
-<td align="left">0</td>
-<td align="left">4/10/19</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#outline_(10_points;_5%)">Outline</a></td>
-<td align="left">10</td>
-<td align="left">5/1/19</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#draft_data_preparation_script_(20_points)">Draft</a></td>
-<td align="left">20</td>
-<td align="left">5/27/19</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#peer_review_of_data_preparation_script_(20_points)">Peer review</a></td>
-<td align="left">20</td>
-<td align="left">6/3/19</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#final_product_grading_(100_points)">Product</a></td>
-<td align="left">100</td>
-<td align="left">6/12/19 (11:59 pm)</td>
-</tr>
-</tbody>
-</table>
+<div id="part-c-some-basic-api-calls" class="section level3">
+<h3>Part C: Some basic API calls</h3>
+<p>Many of the list elements have urls for API calls. For example</p>
+<pre class="r"><code>sw_films[[1]]$characters[1]</code></pre>
+<pre><code>## [1] &quot;http://swapi.co/api/people/1/&quot;</code></pre>
+<p>The above provides the url necessary to make an API call for all the information available on the first character in the first film. You can get this information into R with the following code</p>
+<pre class="r"><code>library(httr)
+char_1 &lt;- GET(sw_films[[1]]$characters[1]) %&gt;%
+    content(&quot;parsed&quot;) </code></pre>
+<p>You’ll note it looks very similar to the lists we’ve been working with. If you’re interested, you may want to actually visit the link in your browser. Essentially, the call requests that the API provide the output available for the first character. This is returned in JSON format, and the <code>content(x, "parsed")</code> part transforms it into a nested list.</p>
+<ol style="list-style-type: decimal">
+<li>Create a data frame that has two columns listing the names of every character in the first film (i.e., all the characters in <code>sw_films[[1]]$characters</code>), and the total number of films each character appeared in (note, this may take a minute or two).</li>
+</ol>
+<div id="bonus-up-to-1-point-extra-credit" class="section level4">
+<h4>Bonus: Up to 1 point extra credit</h4>
+<ol start="2" style="list-style-type: decimal">
+<li>Add an additional column to your data frame that includes the names of all the films each character was in.</li>
+</ol>
 </div>
 </div>
 
