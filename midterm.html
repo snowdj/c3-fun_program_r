@@ -422,7 +422,7 @@ div.tocify {
 <p>This work should all be housed in a GitHub repo. Establish the repo and add collaborators if you have any.</p>
 <p>Loading the data takes a minute, so I would suggest you do it once and cache it. This just means including <code>knitr::opts_chunk$set(cache = TRUE)</code> in one of your chunk options.</p>
 <p>The problem with caching is that sometimes results of a later chunk depend upon earlier ones and things can get out of sync. If you make a change and it doesn’t have the result you expect, try clearing the cache and knitting again.</p>
-<p><img src="midterm/clear_cache.png" /></p>
+<p><img src="img/clear_cache.png" /></p>
 <p>If this is confusing, don’t worry about it. Either come check in with me or ignore this part and don’t use caching. It will just take a little longer to render your file each time you click “knit”.</p>
 <p>I would also recommend not tracking the cache files. This means adding the cache folder to your <code>.gitignore</code> file. If you initialized your repo with the R <code>.gitignore</code> file this is actually already taken of for you. If not, add <code>/*_cache/</code> to your <code>.gitignore</code>.</p>
 </div>
