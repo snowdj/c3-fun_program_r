@@ -27,8 +27,10 @@ before assigning final points.
 #### 50 points total
 
 **Assigned**: 4/22/19
-
 **Due**: 5/6/19
+
+[Take-home Portion](midterm.html)
+
 
 More details will be available later in the term, but a midterm will be 
 assigned, which will likely ask you to rewrite code to accomplish a similar 
