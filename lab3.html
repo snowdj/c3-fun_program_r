@@ -421,57 +421,41 @@ div.tocify {
 
 
 <p>This lab focuses on writing basic functions.</p>
-<div id="part-a-foundations" class="section level1">
-<h1>Part A: Foundations</h1>
-<div id="function-fundamentals" class="section level3">
-<h3>1: Function Fundamentals</h3>
-<p>Briefly name and describe the three fundamental components of a function.</p>
+<div id="part-a-foundations" class="section level3">
+<h3>Part A: Foundations</h3>
+<ol style="list-style-type: decimal">
+<li><p>Briefly name and describe the three fundamental components of a function.</p></li>
+<li><p>Describe three different ways functions can be stored/applied and an example of when you might want to use each version.</p></li>
+</ol>
 </div>
-<div id="function-types" class="section level3">
-<h3>2: Function types</h3>
-<p>Describe three different ways functions can be stored/applied and an example of when you might want to use each version.</p>
-</div>
-</div>
-<div id="part-b-applied-practice" class="section level1">
-<h1>Part B: Applied practice</h1>
-<div id="custom-mean" class="section level3">
-<h3>1: Custom mean</h3>
+<div id="part-b-applied-practice" class="section level3">
+<h3>Part B: Applied practice</h3>
 <p>The mean is defined as</p>
 <p><span class="math display">\[
 \frac{\sum_{i=1}^n{x_i}}{n}
 \]</span></p>
 <p>where <span class="math inline">\(x_i\)</span> represents each element in the mean and <span class="math inline">\(n\)</span> represents the total number of elements. In other words, sum and divide by the number included.</p>
-<p>Write a function to calculate the mean that removes missing data before conducting the calculation. You may not use <code>base::mean</code> or any similar function that conducts a mean calculation.</p>
-</div>
-<div id="testing-your-function" class="section level2">
-<h2>2: Testing your function</h2>
-<p>Test your function to make sure it (a) provides the expected results, and(b) gives identical output to <code>base::mean</code> when <code>na.rm = TRUE</code>.</p>
-</div>
-<div id="both-na-count" class="section level2">
-<h2>3: Both NA count</h2>
-<p>Write a function that takes two vectors of the same length and returns the total number of instances where the value is <code>NA</code> for both vectors. For example, given the following two vectors</p>
+<ol style="list-style-type: decimal">
+<li><p>Write a function to calculate the mean that removes missing data before conducting the calculation. You may not use <code>base::mean</code> or any similar function that conducts a mean calculation.</p></li>
+<li><p>Test your function to make sure it (a) provides the expected results, and(b) gives identical output to <code>base::mean</code> when <code>na.rm = TRUE</code>.</p></li>
+<li><p>Write a function that takes two vectors of the same length and returns the total number of instances where the value is <code>NA</code> for both vectors. For example, given the following two vectors</p></li>
+</ol>
 <pre class="r"><code>c(1, NA, NA, 3, 3, 9, NA)
 c(NA, 3, NA, 4, NA, NA, NA)</code></pre>
 <p>The function should return a value of <code>2</code>, because the vectors are both <code>NA</code> at the third and seventh locations. Provide at least one additional test that the function works as expected.</p>
-</div>
-<div id="code-to-functions" class="section level2">
-<h2>4: Code to functions</h2>
-<p>Turn the following into functions. Make sure to give them meaningful names. Test them out to make sure they provide the expected output.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Turn the following into functions. Make sure to give them meaningful names. Test them out to make sure they provide the expected output.</li>
+</ol>
 <pre class="r"><code>mean(is.na(airquality$Ozone))
 
 purrr::map_dbl(split(mtcars$cyl, mtcars$cyl), length) / length(mtcars$cyl)
 
 (mtcars$mpg - mean(mtcars$mpg, na.rm = TRUE)) / 
   sd(mtcars$mpg, na.rm = TRUE) </code></pre>
-</div>
-<div id="numeric-df" class="section level2">
-<h2>5: Numeric df</h2>
-<p>Write a function that takes a data frame as its input and returns a data frame with only the numeric columns.</p>
-</div>
-<div id="numeric-df-summary" class="section level2">
-<h2>6: Numeric df summary</h2>
-<p>Write a function that uses the function you wrote in Question 5, and returns a data frame with the mean and standard deviation of each numeric column.</p>
-</div>
+<ol start="5" style="list-style-type: decimal">
+<li><p>Write a function that takes a data frame as its input and returns a data frame with only the numeric columns.</p></li>
+<li><p>Write a function that uses the function you wrote in Question 5, and returns a data frame with the mean and standard deviation of each numeric column.</p></li>
+</ol>
 </div>
 
 <p>
