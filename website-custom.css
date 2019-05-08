@@ -19,6 +19,36 @@
 
 @import url('https://fonts.googleapis.com/css?family=Inconsolata');
 
+.hljs-assign {
+    color: #F68B88;
+}
+
+.hljs-dollar {
+ color: #A4A4A4;
+}
+
+.hljs-pipe {
+ color: #B096FF;
+}
+
+.hljs-parens_open {
+    color: #5FBBFF;
+}
+
+.hljs-parens_close {
+    color: #5FBBFF;
+}
+
+.hljs-brack_open {
+    color: #FFDCA0;
+    font-style: bold;
+}
+
+.hljs-brack_close {
+    color: #FFDCA0;
+    font-style: bold;
+}
+
 .hljs-number {
   color: #90D6CA;
 }
@@ -29,8 +59,8 @@
 }
 
 .hljs-keyword {
-  color: #75ABD4;
-  font-weight: bold;
+  color: #E054FF;
+  /*font-weight: bold;*/
 }
 
 .hljs-string {
