@@ -218,7 +218,7 @@ background-image:url(https://d33wubrfki0l68.cloudfront.net/f0494d020aa517ae7b101
 ---
 # Challenge
 * Can you extend the previous looping to supply the summary for every column?
-Hint: You'll need `purrr::map2`.
+Hint: You'll need to make a nested loop (loop each function through each column)
 
 
 ---
