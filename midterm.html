@@ -519,7 +519,7 @@ div.tocify {
 gap &lt;- function(data, ref, foc) {
     x &lt;- data[[ref]]
     y &lt;- data[[foc]]
-    auc &lt;- pracma::trapz(y / y[length(x)],
+    auc &lt;- pracma::trapz(y / y[length(y)],
                          x / x[length(x)])
     sqrt(2)*qnorm(auc)
 }

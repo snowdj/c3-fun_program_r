@@ -50,6 +50,7 @@ download_file <- function(year) {
 ```{r answer-1a, message = FALSE, warning = FALSE}
 library(tidyverse)
 d <- map_df(15:18, download_file) 
+
 ```
 
 Conduct some basic data cleaning to make your data file look like the following. 
@@ -112,7 +113,7 @@ Note - you'll need to install the `{pracma}` package first (assuming you don't h
 gap <- function(data, ref, foc) {
 	x <- data[[ref]]
 	y <- data[[foc]]
-	auc <- pracma::trapz(y / y[length(x)],
+	auc <- pracma::trapz(y / y[length(y)],
 	                     x / x[length(x)])
 	sqrt(2)*qnorm(auc)
 }
@@ -161,7 +162,7 @@ ggplot(aes(grade_level, v)) +
 	     caption = "2017-18 School year, Ashland School District, Oregon",
 	     x = "Grade",
 	     y = "Effect Size") + 
-  theme_minimal(25) +
+  theme_minimal(10) +
   theme( 
     axis.text = element_text(color = "aliceblue"), 
     axis.title = element_text(color = "aliceblue"),
