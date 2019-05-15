@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Functions: Part 3</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/countdown-0.1.0/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.1.0/countdown.js"></script>
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Functions: Part 3
+### Daniel Anderson
+### Week 7, Class 2
+
+---
+
+
+
+
+# Agenda
+* What makes functions "good"
+
+* Return values
+
+* Thinking more about function names
+
+* Non-standard evaluation
+
+* An example: Cohen's `\(d\)`
+
+* Practice (if there's time)
+
+---
+# Learning objectives
+* Understand how functions build on top of each other and why "only do one
+thing" is a good mantra
+
+* Understand non-standard evaluation is, even if you aren't able to fully work
+with it
+
+---
+class: inverse center middle
+# Brainstorm
+What makes a function "good" or "bad"
+
+<div class="countdown" id="timer_5cdc2d4c" style="right:0;bottom:0;left:0;">
+<code><span class="digits minutes">02</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
+
+---
+class: bottom right
+background-image:url(img/hadley-tensions.png)
+background-size: contain
+
+Slide from Hadley Master R training
+
+---
+class: bottom right
+background-image:url(img/hadley-errors.png)
+background-size: contain
+
+Slide from Hadley Master R training
+
+---
+class: bottom left
+background-image:url(img/hadley-continuum.png)
+background-size: contain
+
+Slide from 
+
+Hadley Master 
+
+R training
+
+---
+# What does this mean operationally?
+* Your function should do ONE thing (and do it well)
+
+* Careful when naming functions - be as clear as possible
+
+* Embed useful error messages and warnings
+	+ Particularly if you're working on a package or set of functions or others
+	are using your functions
+
+* Refactor your code to be more clear after initial drafts (it's okay to be
+messy on a first draft)
+
+
+---
+# Example 1
+* Anything we can do to clean this up?
+
+
+```r
+both_na &lt;- function(x, y) {
+	if(length(x) != length(y)) {
+		lx &lt;- length(x)
+		ly &lt;- length(y)
+		
+		v_lngths &lt;- paste0("x = ", lx, ", y = ", ly)
+
+		if(lx %% ly == 0 | ly %% lx == 0) {
+			warning("Vectors were recycled (", v_lngths, ")")
+		}
+		else {
+			stop("Vectors are of different lengths and are not recyclable:",
+			     v_lngths)	
+		}
+	}
+	sum(is.na(x) &amp; is.na(y))
+}
+```
+
+---
+# Calculate if recyclable
+
+
+```r
+recyclable &lt;- function(x, y) {
+	test1 &lt;- length(x) %% length(y)
+	test2 &lt;- length(y) %% length(x)
+
+	any(c(test1, test2) == 0)
+}
+```
+
+---
+# Test it
+
+
+```r
+a &lt;- c(1, NA, NA, 3, 3, 9, NA)
+b &lt;- c(NA, 3, NA, 4, NA, NA, NA)
+
+recyclable(a, b)
+```
+
+```
+## [1] TRUE
+```
+
+```r
+recyclable(a, c(b, b))
+```
+
+```
+## [1] TRUE
+```
+
+```r
+recyclable(a, c(b, b, b))
+```
+
+```
+## [1] TRUE
+```
+
+```r
+recyclable(c(a, a), c(b, b, b))
+```
+
+```
+## [1] FALSE
+```
+
+---
+# Revision
+
+
+```r
+both_na &lt;- function(x, y) {
+
+	if(!recyclable(x, y)) {
+		stop("Vectors are of different lengths and are not recyclable: ",
+		     "(x = ", length(x),
+		     ", y = ", length(y), ")")	
+	}
+
+	if(length(x) == length(y)) {
+		return(sum(is.na(x) &amp; is.na(y)))
+	}
+	
+	if(recyclable(x, y)) {
+		warning("Vectors were recycled (", 
+		        "x = ", length(x), 
+		        ", y = ", length(y), ")")
+		return(sum(is.na(x) &amp; is.na(y)))
+	}
+}
+```
+
+---
+# Test it
+
+
+```r
+both_na(a, b)
+```
+
+```
+## [1] 2
+```
+
+```r
+both_na(a, c(b, b))
+```
+
+```
+## Warning in both_na(a, c(b, b)): Vectors were recycled (x = 7, y = 14)
+```
+
+```
+## [1] 4
+```
+
+```r
+both_na(c(a, b), c(b, b, b))
+```
+
+```
+## Error in both_na(c(a, b), c(b, b, b)): Vectors are of different lengths and are not recyclable: (x = 14, y = 21)
+```
+
+```r
+both_na(c(a, a), b)
+```
+
+```
+## Warning in both_na(c(a, a), b): Vectors were recycled (x = 14, y = 7)
+```
+
+```
+## [1] 4
+```
+
+---
+# Anything else?
+
+--
+### Make errors/warnings a function
+
+--
+
+```r
+check_lengths &lt;- function(x, y) {
+	if(!length(x) == length(y)) {
+		if(recyclable(x, y)) {
+			warning("Vectors were recycled (", 
+			        "x = ", length(x), 
+			        ", y = ", length(y), ")")
+		}
+		else {
+			stop("Vectors are of different lengths and are not recyclable: ",
+		     "(x = ", length(x),
+		     ", y = ", length(y), ")")
+		}
+	}
+}
+```
+
+---
+# Revision 2
+
+
+```r
+both_na &lt;- function(x, y) {
+	check_lengths(x, y)
+	sum(is.na(x) &amp; is.na(y))
+}
+```
+
+
+---
+# Test it
+
+
+```r
+both_na(a, b)
+```
+
+```
+## [1] 2
+```
+
+```r
+both_na(a, c(b, b))
+```
+
+```
+## Warning in check_lengths(x, y): Vectors were recycled (x = 7, y = 14)
+```
+
+```
+## [1] 4
+```
+
+```r
+both_na(c(a, b), c(b, b, b))
+```
+
+```
+## Error in check_lengths(x, y): Vectors are of different lengths and are not recyclable: (x = 14, y = 21)
+```
+
+```r
+both_na(c(a, a), b)
+```
+
+```
+## Warning in check_lengths(x, y): Vectors were recycled (x = 14, y = 7)
+```
+
+```
+## [1] 4
+```
+
+
+---
+# Why would we do this?
+* In this case - more readable code
+
+* We might re-use the `recyclable` or `check_lengths` functions in other/new
+functions
+
+* Helps make de-bugging easier
+
+---
+# Quick de-bugging example
+
+
+```r
+f &lt;- function(a) g(a)
+g &lt;- function(b) h(b)
+h &lt;- function(c) i(c)
+i &lt;- function(d) {
+  if (!is.numeric(d)) {
+    stop("`d` must be numeric", call. = FALSE)
+  }
+  d + 10
+}
+```
+
+---
+# traceback
+
+
+```r
+f("a")
+```
+
+```
+## Error: `d` must be numeric
+```
+
+```r
+traceback()
+```
+
+```
+## No traceback available
+```
+
+---
+# Thinking more about return values
+* Our first revision was the first instance we've seen where there is a possible
+return value before the end of the function.
+
+* By default the function will return the last thing that is evaluated
+
+* Override this behavior with `return`
+
+---
+# Pop quiz
+
+* What will the following return?
+
+
+```r
+add_two &lt;- function(x) {
+	result &lt;- x + 2
+}
+```
+
+--
+### Answer: Nothing! Why?
+
+```r
+add_two(7)
+add_two(5)
+```
+
+---
+# Specify the return value
+
+The below are all equivalent, and all result in the same function behavior
+
+.pull-left[
+
+```r
+add_two.1 &lt;- function(x) {
+	result &lt;- x + 2
+	result
+}
+add_two.2 &lt;- function(x) {
+	x + 2
+}
+```
+]
+
+.pull-right[
+
+```r
+add_two.3 &lt;- function(x) {
+	result &lt;- x + 2
+	return(result)
+}
+```
+]
+
+---
+# When to use `return`?
+Generally reserve `return` for you're returning a value prior to the full
+evaluation of the function. Otherwise, use `.1` or `.2` methods from prior slide.
+
+---
+# Thinking about function names
+
+Which of these is most intuitive?
+
+
+```r
+f &lt;- function(x) {
+	x &lt;- sort(x)
+	data.frame(value = x, 
+	           p = ecdf(x)(x))
+}
+
+ptile &lt;- function(x) {
+	x &lt;- sort(x)
+	data.frame(value = x, 
+	           ptile = ecdf(x)(x))
+}
+percentile_df &lt;- function(x) {
+	x &lt;- sort(x)
+	data.frame(value = x, 
+	           percentile = ecdf(x)(x))
+}
+```
+
+---
+# Output
+* The descriptive nature of the output can also help
+
+* Maybe a little too tricky but...
+
+
+```r
+percentile_df &lt;- function(x) {
+	arg &lt;- as.list(match.call())
+	x &lt;- sort(x)
+	d &lt;- data.frame(value = x, 
+	                percentile = ecdf(x)(x))
+	
+	names(d)[1] &lt;- paste0(as.character(arg$x), collapse = "_")
+	d
+}
+```
+
+---
+
+```r
+random_vector &lt;- rnorm(100)
+tail(percentile_df(random_vector))
+```
+
+```
+##     random_vector percentile
+## 95       1.729266       0.95
+## 96       1.774020       0.96
+## 97       1.783800       0.97
+## 98       1.851269       0.98
+## 99       2.061958       0.99
+## 100      2.303735       1.00
+```
+
+```r
+head(percentile_df(rnorm(50)))
+```
+
+```
+##    rnorm_50 percentile
+## 1 -1.997381       0.02
+## 2 -1.879040       0.04
+## 3 -1.674460       0.06
+## 4 -1.447384       0.08
+## 5 -1.378055       0.10
+## 6 -1.050303       0.12
+```
+
+---
+# How do we figure these things out?
+
+* Change the return value to whatever it is you want, and run it over and over.
+
+[demo]
+
+
+---
+# Thinking about dependencies
+* What's the purpose of the function?
+
+	+ Just your use? Never needed again? Don't worry about it at all.
+
+	+ Mass scale? Worry a fair bit, but make informed decisions.
+
+* What's the likelihood of needing to reproduce the results in the future?
+
+	+ If high, worry more.
+
+* Consider using name spacing (`::`)
+
+
+---
+class: inverse center middle
+# Non-standard evaluation (NSE)
+### A high-level look
+
+---
+# Note
+* Were it not for the tidyverse, I would not even mention NSE
+
+* Generally, it's not an incredibly important topic
+
+* But, NSE is ubiquitous in the tidyverse - literally just about everything uses
+NSE, which makes programming with tidyverse functions more difficult
+
+
+---
+# What is NSE
+* Implementation of different scoping rules
+
+* In dplyr and many others, arguments are evaluated inside the specified data
+frames, rather than the current or global environment.
+
+
+--
+### How?
+(a) Capture an expression (quote it)
+(b) Use the expression within the correct context (evaluate it)
+
+So, `x` is evaluated as, e.g., `df$x` rather than `globalenv()$x`. 
+
+
+---
+# Could be applied with our previous example!
+* Here `base::substitute`
+
+
+```r
+percentile_df &lt;- function(x) {
+	sorted &lt;- sort(x)
+	d &lt;- data.frame(sorted, percentile = ecdf(sorted)(sorted))
+	names(d)[1] &lt;- paste0(substitute(x), collapse = "_")
+	d
+}
+percentile_df(rnorm(100, 5, 0.2)) %&gt;%
+	head()
+```
+
+```
+##   rnorm_100_5_0.2 percentile
+## 1        4.555823       0.01
+## 2        4.649304       0.02
+## 3        4.690021       0.03
+## 4        4.706050       0.04
+## 5        4.722293       0.05
+## 6        4.744492       0.06
+```
+
+---
+# Confusing
+* Outside of a function, `substitute` operates just like `quote` - it quotes the
+input. 
+
+* Inside of a function, `substitute` does as its name implies - it substitutes
+the input for the name.
+
+---
+# Example
+
+
+```r
+quote(subset(df, select = var))
+```
+
+```
+## subset(df, select = var)
+```
+
+```r
+substitute(subset(df, select = var))
+```
+
+```
+## subset(df, select = var)
+```
+
+```r
+extract_var &lt;- function(df, var) {
+	substitute(df)
+}
+extract_var(mtcars)
+```
+
+```
+## mtcars
+```
+
+---
+# Actually getting this thing to work
+
+
+```r
+extract_var &lt;- function(df, var) {
+	subset(eval(substitute(df)), 
+	       select = var)
+}
+extract_var(mtcars, "mpg")
+```
+
+```
+##                      mpg
+## Mazda RX4           21.0
+## Mazda RX4 Wag       21.0
+## Datsun 710          22.8
+## Hornet 4 Drive      21.4
+## Hornet Sportabout   18.7
+## Valiant             18.1
+## Duster 360          14.3
+## Merc 240D           24.4
+## Merc 230            22.8
+## Merc 280            19.2
+## Merc 280C           17.8
+## Merc 450SE          16.4
+## Merc 450SL          17.3
+## Merc 450SLC         15.2
+## Cadillac Fleetwood  10.4
+## Lincoln Continental 10.4
+## Chrysler Imperial   14.7
+## Fiat 128            32.4
+## Honda Civic         30.4
+## Toyota Corolla      33.9
+## Toyota Corona       21.5
+## Dodge Challenger    15.5
+## AMC Javelin         15.2
+## Camaro Z28          13.3
+## Pontiac Firebird    19.2
+## Fiat X1-9           27.3
+## Porsche 914-2       26.0
+## Lotus Europa        30.4
+## Ford Pantera L      15.8
+## Ferrari Dino        19.7
+## Maserati Bora       15.0
+## Volvo 142E          21.4
+```
+
+---
+# Why `eval`
+* `substitute` is quoting the input, but we then need to evaluate it.
+
+* All of this is rather confusing
+
+* The tidyverse uses it so frequently, they've decided to implement their own
+version, called `tidyeval`, which we'll get to in a minute.
+
+---
+# Why is NSE used so frequently in the tidyverse?
+
+.pull-left[
+
+```r
+select(mpg, 
+       manufacturer, model, hwy)
+```
+
+```
+## # A tibble: 234 x 3
+##    manufacturer model        hwy
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;int&gt;
+##  1 audi         a4            29
+##  2 audi         a4            29
+##  3 audi         a4            31
+##  4 audi         a4            30
+##  5 audi         a4            26
+##  6 audi         a4            26
+##  7 audi         a4            27
+##  8 audi         a4 quattro    26
+##  9 audi         a4 quattro    25
+## 10 audi         a4 quattro    28
+## # … with 224 more rows
+```
+]
+
+.pull-right[
+* It makes interactive work easier!
+
+* But programming is a harder...
+
+* Without NSE, `select` and similar functions would not know where `manufacturer`, `model`, or `hwy` "live". It would be looking for objects in the global environment with these names.
+]
+
+---
+# dplyr programming fail
+
+* Let's say we wanted a function that returned means in a nice table-y format
+for a variable by two groups (e.g., cross-tab sort of format)
+
+
+--
+* Typically, we would start by solving this problem for a single situation, then
+we'd generalize it to a function.
+
+
+--
+* Let's do it!
+
+
+---
+
+```r
+mtcars %&gt;%
+	group_by(cyl, gear) %&gt;%
+	summarize(mean = mean(mpg, na.rm = TRUE)) %&gt;%
+	spread(cyl, mean)
+```
+
+```
+## # A tibble: 3 x 4
+##    gear    `4`   `6`   `8`
+##   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     3 21.5   19.75 15.05
+## 2     4 26.925 19.75 NA   
+## 3     5 28.2   19.7  15.4
+```
+
+* Try generalizing this to a function writing a fun
+
+<div class="countdown" id="timer_5cdc2ebf" style="right:0;bottom:1;left:0;">
+<code><span class="digits minutes">04</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
+
+---
+# Generalize to a function
+
+Typically, we would expect something like this to work
+
+
+```r
+group_means &lt;- function(data, outcome, group_1, group_2) {
+	data %&gt;%
+		group_by(group_1, group_2) %&gt;%
+		summarize(mean = mean(outcome, na.rm = TRUE)) %&gt;%
+		spread(group_1, mean)
+}
+```
+
+---
+# But it doesn't...
+
+
+```r
+group_means(mtcars, mpg, cyl, gear)
+```
+
+```
+## Error: Column `group_1` is unknown
+```
+
+```r
+group_means(diamonds, price, cut, clarity)
+```
+
+```
+## Error: Column `group_1` is unknown
+```
+
+--
+### Why?
+* It's looking for an object called `group_1` that doesn't exist inside the function or in the global workspace!
+
+
+--
+### Solution
+* Quote it, and evaluate it in the correct place
+
+---
+# The {rlang} version
+
+
+```r
+group_means &lt;- function(data, outcome, group_1, group_2) {
+	out &lt;- enquo(outcome) # Quote the inputs
+	g1 &lt;- enquo(group_1)
+	g2 &lt;- enquo(group_2)
+
+	data %&gt;%
+		group_by(!!g1, !!g2) %&gt;% # !! to evaluate (bang-bang)
+		summarize(mean = mean(!!out, na.rm = TRUE)) %&gt;%
+		spread(!!g1, mean)
+}
+```
+
+---
+
+
+```r
+group_means(mtcars, mpg, cyl, gear)
+```
+
+```
+## # A tibble: 3 x 4
+##    gear    `4`   `6`   `8`
+##   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     3 21.5   19.75 15.05
+## 2     4 26.925 19.75 NA   
+## 3     5 28.2   19.7  15.4
+```
+
+```r
+group_means(diamonds, price, cut, clarity)
+```
+
+```
+## # A tibble: 8 x 6
+##   clarity     Fair     Good `Very Good`  Premium    Ideal
+##   &lt;ord&gt;      &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 I1      3703.533 3596.635    4078.226 3947.332 4335.726
+## 2 SI2     5173.916 4580.261    4988.688 5545.937 4755.953
+## 3 SI1     4208.279 3689.533    3932.391 4455.269 3752.118
+## 4 VS2     4174.724 4262.236    4215.760 4550.331 3284.550
+## 5 VS1     4165.141 3801.446    3805.353 4485.462 3489.744
+## 6 VVS2    3349.768 3079.108    3037.765 3795.123 3250.290
+## 7 VVS1    3871.353 2254.774    2459.441 2831.206 2468.129
+## 8 IF      1912.333 4098.324    4396.216 3856.143 2272.913
+```
+
+
+---
+# Alternative: Pass the dots!
+* Note, I've made the function a bit simpler here by removing the spread
+
+
+```r
+group_means2 &lt;- function(data, outcome, ...) {
+	out &lt;- enquo(outcome) # Still have to quote the outcome
+
+	data %&gt;%
+		group_by(...) %&gt;% 
+		summarize(mean = mean(!!out, na.rm = TRUE)) 
+}
+
+group_means2(mtcars, mpg, cyl, gear)
+```
+
+```
+## # A tibble: 8 x 3
+## # Groups:   cyl [3]
+##     cyl  gear   mean
+##   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1     4     3 21.5  
+## 2     4     4 26.925
+## 3     4     5 28.2  
+## 4     6     3 19.75 
+## 5     6     4 19.75 
+## 6     6     5 19.7  
+## 7     8     3 15.05 
+## 8     8     5 15.4
+```
+
+```r
+group_means2(diamonds, price, cut, clarity)
+```
+
+```
+## # A tibble: 40 x 3
+## # Groups:   cut [5]
+##    cut   clarity     mean
+##    &lt;ord&gt; &lt;ord&gt;      &lt;dbl&gt;
+##  1 Fair  I1      3703.533
+##  2 Fair  SI2     5173.916
+##  3 Fair  SI1     4208.279
+##  4 Fair  VS2     4174.724
+##  5 Fair  VS1     4165.141
+##  6 Fair  VVS2    3349.768
+##  7 Fair  VVS1    3871.353
+##  8 Fair  IF      1912.333
+##  9 Good  I1      3596.635
+## 10 Good  SI2     4580.261
+## # … with 30 more rows
+```
+
+
+---
+# Added benefit
+I can now also pass as many columns as I want, and it will still work!
+
+
+```r
+group_means2(diamonds, price, cut, clarity, color)
+```
+
+```
+## # A tibble: 276 x 4
+## # Groups:   cut, clarity [40]
+##    cut   clarity color     mean
+##    &lt;ord&gt; &lt;ord&gt;   &lt;ord&gt;    &lt;dbl&gt;
+##  1 Fair  I1      D     7383    
+##  2 Fair  I1      E     2095.222
+##  3 Fair  I1      F     2543.514
+##  4 Fair  I1      G     3187.472
+##  5 Fair  I1      H     4212.962
+##  6 Fair  I1      I     3501    
+##  7 Fair  I1      J     5795.043
+##  8 Fair  SI2     D     4355.143
+##  9 Fair  SI2     E     4172.385
+## 10 Fair  SI2     F     4520.112
+## # … with 266 more rows
+```
+
+---
+# Challenge
+
+* Write a function that summarizes any numeric columns by returning the mean, 
+standard deviation, min, and max values. 
+
+* For bonus points, embed a meaningful error message if the columns supplied are
+not numeric.
+
+Example
+
+
+
+
+```r
+summarize_cols(diamonds, depth, table, price)
+```
+
+```
+## # A tibble: 3 x 5
+##   var         mean          sd   min   max
+##   &lt;chr&gt;      &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 depth   61.74940    1.432621    43    79
+## 2 price 3932.800   3989.440      326 18823
+## 3 table   57.45718    2.234491    43    95
+```
+
+<div class="countdown" id="timer_5cdc2d4f" style="right:0;bottom:0;left:1;">
+<code><span class="digits minutes">07</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
+
+---
+# Pass the dots!
+
+
+```r
+summarize_cols &lt;- function(data, ...) {
+	data %&gt;%
+		select(...) %&gt;%
+		gather(var, val) %&gt;%
+		group_by(var) %&gt;%
+		summarize(mean = mean(val, na.rm = TRUE),
+	          	sd = sd(val, na.rm = TRUE),
+	          	min = min(val, na.rm = TRUE),
+	          	max = max(val, na.rm = TRUE))
+}
+```
+
+---
+# Example with plotting
+* ggplot, for now, has a few tools to make programming with it easier
+
+* These have all been soft deprecated, in favor of {rlang}
+
+* But overall we have the same basic problem
+
+---
+# Does not work
+
+```r
+check_linear &lt;- function(data, x, y, se = TRUE) {
+	p &lt;- ggplot(data, aes(x, y)) +
+			   geom_point(color = "gray80")
+  if(se) {
+  	p &lt;- p +
+  				geom_smooth(method = "lm") +
+  				geom_smooth() 
+  }
+  else {
+  	p &lt;- p +
+  				geom_smooth(method = "lm", se = FALSE) +
+  				geom_smooth(se = FALSE)	
+  }
+  p
+}
+check_linear(mtcars, disp, mpg)
+```
+
+```
+## Error in FUN(X[[i]], ...): object 'disp' not found
+```
+
+![](w7p2_files/figure-html/scatter-fun-fail-1.png)&lt;!-- --&gt;
+
+---
+# Use `aes_string`
+### Soft deprecated
+(notice dots being passed now too)
+
+
+```r
+check_linear &lt;- function(data, x, y, ...) {
+	ggplot(data, aes_string(x, y)) +
+	  geom_point(color = "gray80") +
+		geom_smooth(method = "lm",
+		            color = "magenta", 
+			          ...) +
+		geom_smooth(...)
+}
+```
+
+---
+
+```r
+check_linear(mtcars, "disp", "mpg")
+```
+
+![](w7p2_files/figure-html/scatter-fun1-1.png)&lt;!-- --&gt;
+
+---
+# Use `aes_` with `as.name`
+### Soft deprecated
+
+
+```r
+check_linear &lt;- function(data, x, y, ...) {
+	ggplot(data, aes_(as.name(x), as.name(y))) +
+	  geom_point(color = "gray80") +
+		geom_smooth(method = "lm",
+		            color = "magenta", 
+			          ...) +
+		geom_smooth(...)
+}
+```
+
+---
+
+```r
+check_linear(mtcars, "disp", "mpg")
+```
+
+![](w7p2_files/figure-html/scatter-fun2-1.png)&lt;!-- --&gt;
+
+---
+# Passing dots
+
+```r
+check_linear(mtcars, "disp", "mpg", se = FALSE)
+```
+
+![](w7p2_files/figure-html/scatter-dots-1.png)&lt;!-- --&gt;
+
+---
+# Use tidyeval
+### Method to use going forward
+
+
+```r
+check_linear &lt;- function(data, x, y, ...) {
+	xvar &lt;- enquo(x)
+	yvar &lt;- enquo(y)
+
+	ggplot(data, aes(!!xvar, !!yvar)) +
+	  geom_point(color = "gray80") +
+		geom_smooth(method = "lm",
+		            color = "magenta", 
+			          ...) +
+		geom_smooth(...)
+}
+```
+
+---
+
+
+```r
+check_linear(mtcars, disp, mpg)
+```
+
+![](w7p2_files/figure-html/scatter-tidyeval-1.png)&lt;!-- --&gt;
+
+
+---
+# Add ggplot functions
+
+```r
+check_linear(mtcars, disp, mpg, se = FALSE) +
+	labs(title = "Checking linearity",
+	     subtitle = "Linear vs LOESS fits",
+	     x = "Engine Displacement",
+	     y = "Miles Per gallon") +
+	theme_dark(20)
+```
+
+![](w7p2_files/figure-html/ggplot-extend-1.png)&lt;!-- --&gt;
+
+---
+# Challenge
+Create a `barplot` function that takes an optional `fill_var` argument, using
+{ggplot2}, which fills the bars according to another variable.
+
+<div class="countdown" id="timer_5cdc2e91" style="right:0;bottom:1;left:0;">
+<code><span class="digits minutes">10</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
+
+---
+# One method
+
+
+```r
+barplot &lt;- function(data, x, y, fill_var = NULL) {
+	
+	p &lt;- ggplot(data, aes(factor(!!enquo(x)), !!enquo(y))) 
+	
+	if(!is.null(fill)) {
+		p &lt;- p + geom_col(aes(fill = factor(!!enquo(fill_var))))
+	}
+	else {
+		p &lt;- p + geom_col()
+	}
+	p
+}
+```
+
+---
+# Example 1
+
+
+```r
+barplot(mpg, cyl, hwy, fl)
+```
+
+![](w7p2_files/figure-html/barplot-example1-1.png)&lt;!-- --&gt;
+
+---
+# Example 2
+
+
+```r
+barplot(diamonds, cut, price, clarity)
+```
+
+![](w7p2_files/figure-html/barplot-example2-1.png)&lt;!-- --&gt;
+
+---
+# Overall takeaway
+* Programming with the tidyverse is a bit more difficult
+
+* Also introduces dependencies
+
+* Doesn't mean it's not worth it, if the context fits.
+	+ If you're plotting, I think `ggplot` is worth it
+
+
+---
+class: inverse center middle
+# Appendix
+### Pretty sure we won't have time...
+But here's another example of iterating through multiple drafts of a function.
+
+
+---
+# Example 2
+* Standardized mean difference between two groups: Cohen's `\(d\)`
+
+$$
+ d = \frac { \overline { X } \_ { 1 } - \overline { X } \_ { 2 } } { \sqrt { \frac { ( n \_ { 1 } - 1 ) SD \_ { 1 } ^ { 2 } + ( n \_ { 2 } - 1 ) SD \_ { 2 } ^ { 2 } } { n \_ { 1 } + n \_ { 2 } - 2 } } } 
+$$
+---
+# First draft
+
+
+```r
+coh_d &lt;- function(x1, x2, na.rm = TRUE) {
+	m1 &lt;- mean(x1, na.rm = na.rm)
+	m2 &lt;- mean(x2, na.rm = na.rm)
+	var1 &lt;- var(x1, na.rm = na.rm)
+	var2 &lt;- var(x2, na.rm = na.rm)
+
+	if(na.rm == TRUE) {
+		n1 &lt;- length(na.omit(x1))
+		n2 &lt;- length(na.omit(x2))
+	} else {
+		n1 &lt;- length(x1)
+		n2 &lt;- length(x2)
+	}
+	
+	(m1 - m2) /
+	  (sqrt(
+	    ((n1 - 1)*var1 + (n2 - 1)*var2) /
+	      (n1 + n2 -2)
+	    )
+	  )
+}
+```
+
+---
+# Test it
+
+
+```r
+set.seed(42)
+coh_d(rnorm(1000, 100, 1), rnorm(1000, 95, 1))
+```
+
+```
+## [1] 5.007913
+```
+
+--
+### What can we do to improve it?
+
+--
+* Split it into at least two functions - `mean_diff` and `pooled_sd`
+
+---
+
+```r
+mean_diff &lt;- function(x1, x2, na.rm = TRUE) {
+	m1 &lt;- mean(x1, na.rm = na.rm)
+	m2 &lt;- mean(x2, na.rm = na.rm)
+
+	m1 - m2
+}
+
+pooled_sd &lt;- function(x1, x2, na.rm = TRUE) {
+	var1 &lt;- var(x1, na.rm = na.rm)
+	var2 &lt;- var(x2, na.rm = na.rm)
+
+	if(na.rm == TRUE) {
+		n1 &lt;- length(na.omit(x1))
+		n2 &lt;- length(na.omit(x2))
+	} else {
+		n1 &lt;- length(x1)
+		n2 &lt;- length(x2)
+	}
+	
+	((n1 - 1)*var1 + (n2 - 1)*var2) / (n1 + n2 -2)
+}
+```
+
+---
+# Draft 2
+
+
+```r
+coh_d &lt;- function(x1, x2, na.rm = TRUE) {
+	mean_diff(x1, x2, na.rm = na.rm) /
+	  pooled_sd(x1, x2, na.rm = na.rm)
+}
+coh_d(rnorm(1000, 100, 1), rnorm(1000, 95, 1))
+```
+
+```
+## [1] 4.921497
+```
+
+---
+# Anything else we could do?
+
+--
+* Pull `n` and `var` calculations out from `pooled_sd`
+
+
+--
+
+```r
+ns &lt;- function(x1, x2, na.rm = TRUE) {
+	if(na.rm == TRUE) {
+		n1 &lt;- length(na.omit(x1))
+		n2 &lt;- length(na.omit(x2))
+	} else {
+		n1 &lt;- length(x1)
+		n2 &lt;- length(x2)
+	}
+	c(n1, n2)
+}
+
+vars &lt;- function(x1, x2, na.rm = TRUE) {
+	var1 &lt;- var(x1, na.rm = na.rm)
+	var2 &lt;- var(x2, na.rm = na.rm)
+	c(var1, var2)
+}
+```
+
+
+---
+
+```r
+pooled_sd &lt;- function(x1, x2, na.rm = TRUE) {
+	n &lt;- ns(x1, x2, na.rm = TRUE)
+	v &lt;- vars(x1, x2, na.rm = TRUE)
+	
+	((n[1] - 1)*v[1] + (n[2] - 1)*v[2]) / (sum(n) -2)
+}
+```
+
+
+---
+# Draft 3
+
+
+```r
+coh_d &lt;- function(x1, x2, na.rm = TRUE) {
+	mean_diff(x1, x2, na.rm = na.rm) /
+	  pooled_sd(x1, x2, na.rm = na.rm)
+}
+coh_d(rnorm(1000, 100, 1), rnorm(1000, 95, 1))
+```
+
+```
+## [1] 4.689884
+```
+
+---
+# Last bits
+* Consider building in some warnings/errors
+
+
+```r
+coh_d(c(TRUE, TRUE, FALSE), rnorm(15))
+```
+
+```
+## [1] 1.183248
+```
+
+```r
+coh_d &lt;- function(x1, x2, na.rm = TRUE) {
+	if(!is.numeric(x1) | !is.numeric(x2)) {
+		stop("Both `x1` and `x2` must be numeric.")
+	}
+	mean_diff(x1, x2, na.rm = na.rm) /
+	  pooled_sd(x1, x2, na.rm = na.rm)
+}
+coh_d(c(TRUE, TRUE, FALSE), rnorm(15))
+```
+
+```
+## Error in coh_d(c(TRUE, TRUE, FALSE), rnorm(15)): Both `x1` and `x2` must be numeric.
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,986 @@
+---
+title: "Functions: Part 3"
+author: "Daniel Anderson "
+date: "Week 7, Class 2"
+output:
+  xaringan::moon_reader:
+    css: ["default", "uo", "uo-fonts", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: atelier-dune-light
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+theme_set(theme_minimal(20))
+update_geom_defaults("point", list(size = 3))
+knitr::opts_chunk$set(fig.width = 13, 
+                      message = FALSE, 
+                      warning = FALSE)
+```
+
+# Agenda
+* What makes functions "good"
+
+* Return values
+
+* Thinking more about function names
+
+* Non-standard evaluation
+
+* An example: Cohen's $d$
+
+* Practice (if there's time)
+
+---
+# Learning objectives
+* Understand how functions build on top of each other and why "only do one
+thing" is a good mantra
+
+* Understand non-standard evaluation is, even if you aren't able to fully work
+with it
+
+---
+class: inverse center middle
+# Brainstorm
+What makes a function "good" or "bad"
+
+`r countdown::countdown(minutes = 2, 
+                        left = 0, 
+                        right = 0,
+                        bottom = 0,
+                        color_running_background = "#FEE11A",
+                        color_running_text = "#000")`
+
+---
+class: bottom right
+background-image:url(img/hadley-tensions.png)
+background-size: contain
+
+Slide from Hadley Master R training
+
+---
+class: bottom right
+background-image:url(img/hadley-errors.png)
+background-size: contain
+
+Slide from Hadley Master R training
+
+---
+class: bottom left
+background-image:url(img/hadley-continuum.png)
+background-size: contain
+
+Slide from 
+
+Hadley Master 
+
+R training
+
+---
+# What does this mean operationally?
+* Your function should do ONE thing (and do it well)
+
+* Careful when naming functions - be as clear as possible
+
+* Embed useful error messages and warnings
+	+ Particularly if you're working on a package or set of functions or others
+	are using your functions
+
+* Refactor your code to be more clear after initial drafts (it's okay to be
+messy on a first draft)
+
+
+---
+# Example 1
+* Anything we can do to clean this up?
+
+```{r clean-up1}
+both_na <- function(x, y) {
+	if(length(x) != length(y)) {
+		lx <- length(x)
+		ly <- length(y)
+		
+		v_lngths <- paste0("x = ", lx, ", y = ", ly)
+
+		if(lx %% ly == 0 | ly %% lx == 0) {
+			warning("Vectors were recycled (", v_lngths, ")")
+		}
+		else {
+			stop("Vectors are of different lengths and are not recyclable:",
+			     v_lngths)	
+		}
+	}
+	sum(is.na(x) & is.na(y))
+}
+
+```
+
+---
+# Calculate if recyclable
+
+```{r recyclable}
+recyclable <- function(x, y) {
+	test1 <- length(x) %% length(y)
+	test2 <- length(y) %% length(x)
+
+	any(c(test1, test2) == 0)
+}
+```
+
+---
+# Test it
+
+```{r recyclable-test}
+a <- c(1, NA, NA, 3, 3, 9, NA)
+b <- c(NA, 3, NA, 4, NA, NA, NA)
+
+recyclable(a, b)
+recyclable(a, c(b, b))
+recyclable(a, c(b, b, b))
+recyclable(c(a, a), c(b, b, b))
+```
+
+---
+# Revision
+
+```{r both_na-rev1}
+both_na <- function(x, y) {
+
+	if(!recyclable(x, y)) {
+		stop("Vectors are of different lengths and are not recyclable: ",
+		     "(x = ", length(x),
+		     ", y = ", length(y), ")")	
+	}
+
+	if(length(x) == length(y)) {
+		return(sum(is.na(x) & is.na(y)))
+	}
+	
+	if(recyclable(x, y)) {
+		warning("Vectors were recycled (", 
+		        "x = ", length(x), 
+		        ", y = ", length(y), ")")
+		return(sum(is.na(x) & is.na(y)))
+	}
+}
+```
+
+---
+# Test it
+
+```{r both_na-rev1-test, error = TRUE, warning = TRUE}
+both_na(a, b)
+both_na(a, c(b, b))
+both_na(c(a, b), c(b, b, b))
+both_na(c(a, a), b)
+```
+
+---
+# Anything else?
+
+--
+### Make errors/warnings a function
+
+--
+```{r check-lengths}
+check_lengths <- function(x, y) {
+	if(!length(x) == length(y)) {
+		if(recyclable(x, y)) {
+			warning("Vectors were recycled (", 
+			        "x = ", length(x), 
+			        ", y = ", length(y), ")")
+		}
+		else {
+			stop("Vectors are of different lengths and are not recyclable: ",
+		     "(x = ", length(x),
+		     ", y = ", length(y), ")")
+		}
+	}
+}
+```
+
+---
+# Revision 2
+
+```{r rev2}
+both_na <- function(x, y) {
+	check_lengths(x, y)
+	sum(is.na(x) & is.na(y))
+}
+```
+
+
+---
+# Test it
+
+```{r both_na-test2, error = TRUE, warning = TRUE}
+both_na(a, b)
+both_na(a, c(b, b))
+both_na(c(a, b), c(b, b, b))
+both_na(c(a, a), b)
+```
+
+
+---
+# Why would we do this?
+* In this case - more readable code
+
+* We might re-use the `recyclable` or `check_lengths` functions in other/new
+functions
+
+* Helps make de-bugging easier
+
+---
+# Quick de-bugging example
+
+```{r nested-funs}
+f <- function(a) g(a)
+g <- function(b) h(b)
+h <- function(c) i(c)
+i <- function(d) {
+  if (!is.numeric(d)) {
+    stop("`d` must be numeric", call. = FALSE)
+  }
+  d + 10
+}
+```
+
+---
+# traceback
+
+```{r err-traceback, error = TRUE}
+f("a")
+traceback()
+```
+
+---
+# Thinking more about return values
+* Our first revision was the first instance we've seen where there is a possible
+return value before the end of the function.
+
+* By default the function will return the last thing that is evaluated
+
+* Override this behavior with `return`
+
+---
+# Pop quiz
+
+* What will the following return?
+
+```{r return-nothing}
+add_two <- function(x) {
+	result <- x + 2
+}
+```
+
+--
+### Answer: Nothing! Why?
+```{r add_two-result}
+add_two(7)
+add_two(5)
+```
+
+---
+# Specify the return value
+
+The below are all equivalent, and all result in the same function behavior
+
+.pull-left[
+```{r add_two}
+add_two.1 <- function(x) {
+	result <- x + 2
+	result
+}
+add_two.2 <- function(x) {
+	x + 2
+}
+```
+]
+
+.pull-right[
+```{r add_two.3}
+add_two.3 <- function(x) {
+	result <- x + 2
+	return(result)
+}
+```
+]
+
+---
+# When to use `return`?
+Generally reserve `return` for you're returning a value prior to the full
+evaluation of the function. Otherwise, use `.1` or `.2` methods from prior slide.
+
+---
+# Thinking about function names
+
+Which of these is most intuitive?
+
+```{r fun-names}
+f <- function(x) {
+	x <- sort(x)
+	data.frame(value = x, 
+	           p = ecdf(x)(x))
+}
+
+ptile <- function(x) {
+	x <- sort(x)
+	data.frame(value = x, 
+	           ptile = ecdf(x)(x))
+}
+percentile_df <- function(x) {
+	x <- sort(x)
+	data.frame(value = x, 
+	           percentile = ecdf(x)(x))
+}
+```
+
+---
+# Output
+* The descriptive nature of the output can also help
+
+* Maybe a little too tricky but...
+
+```{r percentile_df}
+percentile_df <- function(x) {
+	arg <- as.list(match.call())
+	x <- sort(x)
+	d <- data.frame(value = x, 
+	                percentile = ecdf(x)(x))
+	
+	names(d)[1] <- paste0(as.character(arg$x), collapse = "_")
+	d
+}
+```
+
+---
+```{r precentile_df-example}
+random_vector <- rnorm(100)
+tail(percentile_df(random_vector))
+head(percentile_df(rnorm(50)))
+```
+
+---
+# How do we figure these things out?
+
+* Change the return value to whatever it is you want, and run it over and over.
+
+[demo]
+
+
+---
+# Thinking about dependencies
+* What's the purpose of the function?
+
+	+ Just your use? Never needed again? Don't worry about it at all.
+
+	+ Mass scale? Worry a fair bit, but make informed decisions.
+
+* What's the likelihood of needing to reproduce the results in the future?
+
+	+ If high, worry more.
+
+* Consider using name spacing (`::`)
+
+
+---
+class: inverse center middle
+# Non-standard evaluation (NSE)
+### A high-level look
+
+---
+# Note
+* Were it not for the tidyverse, I would not even mention NSE
+
+* Generally, it's not an incredibly important topic
+
+* But, NSE is ubiquitous in the tidyverse - literally just about everything uses
+NSE, which makes programming with tidyverse functions more difficult
+
+
+---
+# What is NSE
+* Implementation of different scoping rules
+
+* In dplyr and many others, arguments are evaluated inside the specified data
+frames, rather than the current or global environment.
+
+
+--
+### How?
+(a) Capture an expression (quote it)
+(b) Use the expression within the correct context (evaluate it)
+
+So, `x` is evaluated as, e.g., `df$x` rather than `globalenv()$x`. 
+
+
+---
+# Could be applied with our previous example!
+* Here `base::substitute`
+
+```{r nse-percentile_df}
+percentile_df <- function(x) {
+	sorted <- sort(x)
+	d <- data.frame(sorted, percentile = ecdf(sorted)(sorted))
+	names(d)[1] <- paste0(substitute(x), collapse = "_")
+	d
+}
+percentile_df(rnorm(100, 5, 0.2)) %>%
+	head()
+```
+
+---
+# Confusing
+* Outside of a function, `substitute` operates just like `quote` - it quotes the
+input. 
+
+* Inside of a function, `substitute` does as its name implies - it substitutes
+the input for the name.
+
+---
+# Example
+
+```{r }
+quote(subset(df, select = var))
+substitute(subset(df, select = var))
+extract_var <- function(df, var) {
+	substitute(df)
+}
+extract_var(mtcars)
+```
+
+---
+# Actually getting this thing to work
+
+```{r substitute-success}
+extract_var <- function(df, var) {
+	subset(eval(substitute(df)), 
+	       select = var)
+}
+extract_var(mtcars, "mpg")
+```
+
+---
+# Why `eval`
+* `substitute` is quoting the input, but we then need to evaluate it.
+
+* All of this is rather confusing
+
+* The tidyverse uses it so frequently, they've decided to implement their own
+version, called `tidyeval`, which we'll get to in a minute.
+
+---
+# Why is NSE used so frequently in the tidyverse?
+
+.pull-left[
+```{r add_var}
+select(mpg, 
+       manufacturer, model, hwy)
+```
+]
+
+.pull-right[
+* It makes interactive work easier!
+
+* But programming is a harder...
+
+* Without NSE, `select` and similar functions would not know where `manufacturer`, `model`, or `hwy` "live". It would be looking for objects in the global environment with these names.
+]
+
+---
+# dplyr programming fail
+
+* Let's say we wanted a function that returned means in a nice table-y format
+for a variable by two groups (e.g., cross-tab sort of format)
+
+
+--
+* Typically, we would start by solving this problem for a single situation, then
+we'd generalize it to a function.
+
+
+--
+* Let's do it!
+
+
+---
+```{r group-means-practice}
+mtcars %>%
+	group_by(cyl, gear) %>%
+	summarize(mean = mean(mpg, na.rm = TRUE)) %>%
+	spread(cyl, mean)
+```
+
+* Try generalizing this to a function writing a fun
+
+`r countdown::countdown(minutes = 4, 
+                        left = 0, 
+                        right = 0,
+                        bottom = 1,
+                        color_running_background = "#FEE11A",
+                        color_running_text = "#000")`
+
+---
+# Generalize to a function
+
+Typically, we would expect something like this to work
+
+```{r }
+group_means <- function(data, outcome, group_1, group_2) {
+	data %>%
+		group_by(group_1, group_2) %>%
+		summarize(mean = mean(outcome, na.rm = TRUE)) %>%
+		spread(group_1, mean)
+}
+```
+
+---
+# But it doesn't...
+
+```{r group_means-fail, error = TRUE}
+group_means(mtcars, mpg, cyl, gear)
+group_means(diamonds, price, cut, clarity)
+```
+
+--
+### Why?
+* It's looking for an object called `group_1` that doesn't exist inside the function or in the global workspace!
+
+
+--
+### Solution
+* Quote it, and evaluate it in the correct place
+
+---
+# The {rlang} version
+
+```{r rlang}
+group_means <- function(data, outcome, group_1, group_2) {
+	out <- enquo(outcome) # Quote the inputs
+	g1 <- enquo(group_1)
+	g2 <- enquo(group_2)
+
+	data %>%
+		group_by(!!g1, !!g2) %>% # !! to evaluate (bang-bang)
+		summarize(mean = mean(!!out, na.rm = TRUE)) %>%
+		spread(!!g1, mean)
+}
+```
+
+---
+
+```{r group_means-success}
+group_means(mtcars, mpg, cyl, gear)
+group_means(diamonds, price, cut, clarity)
+```
+
+
+---
+# Alternative: Pass the dots!
+* Note, I've made the function a bit simpler here by removing the spread
+
+```{r pass-dots}
+group_means2 <- function(data, outcome, ...) {
+	out <- enquo(outcome) # Still have to quote the outcome
+
+	data %>%
+		group_by(...) %>% 
+		summarize(mean = mean(!!out, na.rm = TRUE)) 
+}
+
+group_means2(mtcars, mpg, cyl, gear)
+group_means2(diamonds, price, cut, clarity)
+```
+
+
+---
+# Added benefit
+I can now also pass as many columns as I want, and it will still work!
+
+```{r pass-dots2}
+group_means2(diamonds, price, cut, clarity, color)
+```
+
+---
+# Challenge
+
+* Write a function that summarizes any numeric columns by returning the mean, 
+standard deviation, min, and max values. 
+
+* For bonus points, embed a meaningful error message if the columns supplied are
+not numeric.
+
+Example
+
+```{r summarize_cols-fun, include = FALSE}
+summarize_cols <- function(data, ...) {
+	data %>%
+		select(...) %>%
+		gather(var, val) %>%
+		group_by(var) %>%
+		summarize(mean = mean(val, na.rm = TRUE),
+	          	sd = sd(val, na.rm = TRUE),
+	          	min = min(val, na.rm = TRUE),
+	          	max = max(val, na.rm = TRUE))
+}
+```
+
+```{r summarize_cols-example1}
+summarize_cols(diamonds, depth, table, price)
+```
+
+`r countdown::countdown(minutes = 7, 
+                        left = 1, 
+                        right = 0,
+                        bottom = 0,
+                        color_running_background = "#FEE11A",
+                        color_running_text = "#000")`
+
+---
+# Pass the dots!
+
+```{r summarize_cols-fun-echo}
+summarize_cols <- function(data, ...) {
+	data %>%
+		select(...) %>%
+		gather(var, val) %>%
+		group_by(var) %>%
+		summarize(mean = mean(val, na.rm = TRUE),
+	          	sd = sd(val, na.rm = TRUE),
+	          	min = min(val, na.rm = TRUE),
+	          	max = max(val, na.rm = TRUE))
+}
+```
+
+---
+# Example with plotting
+* ggplot, for now, has a few tools to make programming with it easier
+
+* These have all been soft deprecated, in favor of {rlang}
+
+* But overall we have the same basic problem
+
+---
+# Does not work
+```{r scatter-fun-fail, error = TRUE}
+check_linear <- function(data, x, y, se = TRUE) {
+	p <- ggplot(data, aes(x, y)) +
+			   geom_point(color = "gray80")
+  if(se) {
+  	p <- p +
+  				geom_smooth(method = "lm") +
+  				geom_smooth() 
+  }
+  else {
+  	p <- p +
+  				geom_smooth(method = "lm", se = FALSE) +
+  				geom_smooth(se = FALSE)	
+  }
+  p
+}
+check_linear(mtcars, disp, mpg)
+```
+
+---
+# Use `aes_string`
+### Soft deprecated
+(notice dots being passed now too)
+
+```{r scatter-fun-success1, fig.height = 4}
+check_linear <- function(data, x, y, ...) {
+	ggplot(data, aes_string(x, y)) +
+	  geom_point(color = "gray80") +
+		geom_smooth(method = "lm",
+		            color = "magenta", 
+			          ...) +
+		geom_smooth(...)
+}
+```
+
+---
+```{r scatter-fun1}
+check_linear(mtcars, "disp", "mpg")
+```
+
+---
+# Use `aes_` with `as.name`
+### Soft deprecated
+
+```{r scatter-fun-success2}
+check_linear <- function(data, x, y, ...) {
+	ggplot(data, aes_(as.name(x), as.name(y))) +
+	  geom_point(color = "gray80") +
+		geom_smooth(method = "lm",
+		            color = "magenta", 
+			          ...) +
+		geom_smooth(...)
+}
+```
+
+---
+```{r scatter-fun2}
+check_linear(mtcars, "disp", "mpg")
+```
+
+---
+# Passing dots
+```{r scatter-dots}
+check_linear(mtcars, "disp", "mpg", se = FALSE)
+```
+
+---
+# Use tidyeval
+### Method to use going forward
+
+```{r scatter-fun-success3}
+check_linear <- function(data, x, y, ...) {
+	xvar <- enquo(x)
+	yvar <- enquo(y)
+
+	ggplot(data, aes(!!xvar, !!yvar)) +
+	  geom_point(color = "gray80") +
+		geom_smooth(method = "lm",
+		            color = "magenta", 
+			          ...) +
+		geom_smooth(...)
+}
+```
+
+---
+
+```{r scatter-tidyeval}
+check_linear(mtcars, disp, mpg)
+```
+
+
+---
+# Add ggplot functions
+```{r ggplot-extend, fig.height = 5}
+check_linear(mtcars, disp, mpg, se = FALSE) +
+	labs(title = "Checking linearity",
+	     subtitle = "Linear vs LOESS fits",
+	     x = "Engine Displacement",
+	     y = "Miles Per gallon") +
+	theme_dark(20)
+
+```
+
+---
+# Challenge
+Create a `barplot` function that takes an optional `fill_var` argument, using
+{ggplot2}, which fills the bars according to another variable.
+
+`r countdown::countdown(minutes = 10, 
+                        left = 0, 
+                        right = 0,
+                        bottom = 1,
+                        color_running_background = "#FEE11A",
+                        color_running_text = "#000")`
+
+---
+# One method
+
+```{r barplot-fun}
+barplot <- function(data, x, y, fill_var = NULL) {
+	
+	p <- ggplot(data, aes(factor(!!enquo(x)), !!enquo(y))) 
+	
+	if(!is.null(fill)) {
+		p <- p + geom_col(aes(fill = factor(!!enquo(fill_var))))
+	}
+	else {
+		p <- p + geom_col()
+	}
+	p
+}
+```
+
+---
+# Example 1
+
+```{r barplot-example1}
+barplot(mpg, cyl, hwy, fl)
+```
+
+---
+# Example 2
+
+```{r barplot-example2}
+barplot(diamonds, cut, price, clarity)
+```
+
+---
+# Overall takeaway
+* Programming with the tidyverse is a bit more difficult
+
+* Also introduces dependencies
+
+* Doesn't mean it's not worth it, if the context fits.
+	+ If you're plotting, I think `ggplot` is worth it
+
+
+---
+class: inverse center middle
+# Appendix
+### Pretty sure we won't have time...
+But here's another example of iterating through multiple drafts of a function.
+
+
+---
+# Example 2
+* Standardized mean difference between two groups: Cohen's $d$
+
+$$
+ d = \frac { \overline { X } \_ { 1 } - \overline { X } \_ { 2 } } { \sqrt { \frac { ( n \_ { 1 } - 1 ) SD \_ { 1 } ^ { 2 } + ( n \_ { 2 } - 1 ) SD \_ { 2 } ^ { 2 } } { n \_ { 1 } + n \_ { 2 } - 2 } } } 
+$$
+---
+# First draft
+
+```{r coh_d1}
+coh_d <- function(x1, x2, na.rm = TRUE) {
+	m1 <- mean(x1, na.rm = na.rm)
+	m2 <- mean(x2, na.rm = na.rm)
+	var1 <- var(x1, na.rm = na.rm)
+	var2 <- var(x2, na.rm = na.rm)
+
+	if(na.rm == TRUE) {
+		n1 <- length(na.omit(x1))
+		n2 <- length(na.omit(x2))
+	} else {
+		n1 <- length(x1)
+		n2 <- length(x2)
+	}
+	
+	(m1 - m2) /
+	  (sqrt(
+	    ((n1 - 1)*var1 + (n2 - 1)*var2) /
+	      (n1 + n2 -2)
+	    )
+	  )
+}
+```
+
+---
+# Test it
+
+```{r test-coh_d}
+set.seed(42)
+coh_d(rnorm(1000, 100, 1), rnorm(1000, 95, 1))
+```
+
+--
+### What can we do to improve it?
+
+--
+* Split it into at least two functions - `mean_diff` and `pooled_sd`
+
+---
+```{r mean_diff}
+mean_diff <- function(x1, x2, na.rm = TRUE) {
+	m1 <- mean(x1, na.rm = na.rm)
+	m2 <- mean(x2, na.rm = na.rm)
+
+	m1 - m2
+}
+
+pooled_sd <- function(x1, x2, na.rm = TRUE) {
+	var1 <- var(x1, na.rm = na.rm)
+	var2 <- var(x2, na.rm = na.rm)
+
+	if(na.rm == TRUE) {
+		n1 <- length(na.omit(x1))
+		n2 <- length(na.omit(x2))
+	} else {
+		n1 <- length(x1)
+		n2 <- length(x2)
+	}
+	
+	((n1 - 1)*var1 + (n2 - 1)*var2) / (n1 + n2 -2)
+}
+
+```
+
+---
+# Draft 2
+
+```{r coh_d2}
+coh_d <- function(x1, x2, na.rm = TRUE) {
+	mean_diff(x1, x2, na.rm = na.rm) /
+	  pooled_sd(x1, x2, na.rm = na.rm)
+}
+coh_d(rnorm(1000, 100, 1), rnorm(1000, 95, 1))
+```
+
+---
+# Anything else we could do?
+
+--
+* Pull `n` and `var` calculations out from `pooled_sd`
+
+
+--
+```{r ns-vars}
+ns <- function(x1, x2, na.rm = TRUE) {
+	if(na.rm == TRUE) {
+		n1 <- length(na.omit(x1))
+		n2 <- length(na.omit(x2))
+	} else {
+		n1 <- length(x1)
+		n2 <- length(x2)
+	}
+	c(n1, n2)
+}
+
+vars <- function(x1, x2, na.rm = TRUE) {
+	var1 <- var(x1, na.rm = na.rm)
+	var2 <- var(x2, na.rm = na.rm)
+	c(var1, var2)
+}
+```
+
+
+---
+```{r pooled_sd2}
+pooled_sd <- function(x1, x2, na.rm = TRUE) {
+	n <- ns(x1, x2, na.rm = TRUE)
+	v <- vars(x1, x2, na.rm = TRUE)
+	
+	((n[1] - 1)*v[1] + (n[2] - 1)*v[2]) / (sum(n) -2)
+}
+```
+
+
+---
+# Draft 3
+
+```{r coh_d3}
+coh_d <- function(x1, x2, na.rm = TRUE) {
+	mean_diff(x1, x2, na.rm = na.rm) /
+	  pooled_sd(x1, x2, na.rm = na.rm)
+}
+coh_d(rnorm(1000, 100, 1), rnorm(1000, 95, 1))
+```
+
+---
+# Last bits
+* Consider building in some warnings/errors
+
+```{r coh_d4, error = TRUE}
+coh_d(c(TRUE, TRUE, FALSE), rnorm(15))
+
+coh_d <- function(x1, x2, na.rm = TRUE) {
+	if(!is.numeric(x1) | !is.numeric(x2)) {
+		stop("Both `x1` and `x2` must be numeric.")
+	}
+	mean_diff(x1, x2, na.rm = na.rm) /
+	  pooled_sd(x1, x2, na.rm = na.rm)
+}
+coh_d(c(TRUE, TRUE, FALSE), rnorm(15))
+```
+
+
+
