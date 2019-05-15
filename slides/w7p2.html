@@ -50,7 +50,7 @@ class: inverse center middle
 # Brainstorm
 What makes a function "good" or "bad"
 
-<div class="countdown" id="timer_5cdc2d4c" style="right:0;bottom:0;left:0;">
+<div class="countdown" id="timer_5cdca2e0" style="right:0;bottom:0;left:0;">
 <code><span class="digits minutes">02</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
 </div>
 
@@ -482,12 +482,12 @@ tail(percentile_df(random_vector))
 
 ```
 ##     random_vector percentile
-## 95       1.729266       0.95
-## 96       1.774020       0.96
-## 97       1.783800       0.97
-## 98       1.851269       0.98
-## 99       2.061958       0.99
-## 100      2.303735       1.00
+## 95       1.630973       0.95
+## 96       1.665885       0.96
+## 97       1.685320       0.97
+## 98       1.918553       0.98
+## 99       2.540644       0.99
+## 100      2.698724       1.00
 ```
 
 ```r
@@ -496,12 +496,12 @@ head(percentile_df(rnorm(50)))
 
 ```
 ##    rnorm_50 percentile
-## 1 -1.997381       0.02
-## 2 -1.879040       0.04
-## 3 -1.674460       0.06
-## 4 -1.447384       0.08
-## 5 -1.378055       0.10
-## 6 -1.050303       0.12
+## 1 -2.413570       0.02
+## 2 -1.780276       0.04
+## 3 -1.429753       0.06
+## 4 -1.334554       0.08
+## 5 -1.252887       0.10
+## 6 -1.176174       0.12
 ```
 
 ---
@@ -576,12 +576,12 @@ percentile_df(rnorm(100, 5, 0.2)) %&gt;%
 
 ```
 ##   rnorm_100_5_0.2 percentile
-## 1        4.555823       0.01
-## 2        4.649304       0.02
-## 3        4.690021       0.03
-## 4        4.706050       0.04
-## 5        4.722293       0.05
-## 6        4.744492       0.06
+## 1        4.629187       0.01
+## 2        4.681535       0.02
+## 3        4.693287       0.03
+## 4        4.720016       0.04
+## 5        4.727363       0.05
+## 6        4.729581       0.06
 ```
 
 ---
@@ -752,7 +752,7 @@ mtcars %&gt;%
 
 * Try generalizing this to a function writing a fun
 
-<div class="countdown" id="timer_5cdc2ebf" style="right:0;bottom:1;left:0;">
+<div class="countdown" id="timer_5cdca06d" style="right:0;bottom:1;left:0;">
 <code><span class="digits minutes">04</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
 </div>
 
@@ -961,7 +961,7 @@ summarize_cols(diamonds, depth, table, price)
 ## 3 table   57.45718    2.234491    43    95
 ```
 
-<div class="countdown" id="timer_5cdc2d4f" style="right:0;bottom:0;left:1;">
+<div class="countdown" id="timer_5cdca314" style="right:0;bottom:0;left:1;">
 <code><span class="digits minutes">07</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
 </div>
 
@@ -1120,54 +1120,6 @@ check_linear(mtcars, disp, mpg, se = FALSE) +
 ![](w7p2_files/figure-html/ggplot-extend-1.png)&lt;!-- --&gt;
 
 ---
-# Challenge
-Create a `barplot` function that takes an optional `fill_var` argument, using
-{ggplot2}, which fills the bars according to another variable.
-
-<div class="countdown" id="timer_5cdc2e91" style="right:0;bottom:1;left:0;">
-<code><span class="digits minutes">10</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
-</div>
-
----
-# One method
-
-
-```r
-barplot &lt;- function(data, x, y, fill_var = NULL) {
-	
-	p &lt;- ggplot(data, aes(factor(!!enquo(x)), !!enquo(y))) 
-	
-	if(!is.null(fill)) {
-		p &lt;- p + geom_col(aes(fill = factor(!!enquo(fill_var))))
-	}
-	else {
-		p &lt;- p + geom_col()
-	}
-	p
-}
-```
-
----
-# Example 1
-
-
-```r
-barplot(mpg, cyl, hwy, fl)
-```
-
-![](w7p2_files/figure-html/barplot-example1-1.png)&lt;!-- --&gt;
-
----
-# Example 2
-
-
-```r
-barplot(diamonds, cut, price, clarity)
-```
-
-![](w7p2_files/figure-html/barplot-example2-1.png)&lt;!-- --&gt;
-
----
 # Overall takeaway
 * Programming with the tidyverse is a bit more difficult
 
@@ -1175,195 +1127,6 @@ barplot(diamonds, cut, price, clarity)
 
 * Doesn't mean it's not worth it, if the context fits.
 	+ If you're plotting, I think `ggplot` is worth it
-
-
----
-class: inverse center middle
-# Appendix
-### Pretty sure we won't have time...
-But here's another example of iterating through multiple drafts of a function.
-
-
----
-# Example 2
-* Standardized mean difference between two groups: Cohen's `\(d\)`
-
-$$
- d = \frac { \overline { X } \_ { 1 } - \overline { X } \_ { 2 } } { \sqrt { \frac { ( n \_ { 1 } - 1 ) SD \_ { 1 } ^ { 2 } + ( n \_ { 2 } - 1 ) SD \_ { 2 } ^ { 2 } } { n \_ { 1 } + n \_ { 2 } - 2 } } } 
-$$
----
-# First draft
-
-
-```r
-coh_d &lt;- function(x1, x2, na.rm = TRUE) {
-	m1 &lt;- mean(x1, na.rm = na.rm)
-	m2 &lt;- mean(x2, na.rm = na.rm)
-	var1 &lt;- var(x1, na.rm = na.rm)
-	var2 &lt;- var(x2, na.rm = na.rm)
-
-	if(na.rm == TRUE) {
-		n1 &lt;- length(na.omit(x1))
-		n2 &lt;- length(na.omit(x2))
-	} else {
-		n1 &lt;- length(x1)
-		n2 &lt;- length(x2)
-	}
-	
-	(m1 - m2) /
-	  (sqrt(
-	    ((n1 - 1)*var1 + (n2 - 1)*var2) /
-	      (n1 + n2 -2)
-	    )
-	  )
-}
-```
-
----
-# Test it
-
-
-```r
-set.seed(42)
-coh_d(rnorm(1000, 100, 1), rnorm(1000, 95, 1))
-```
-
-```
-## [1] 5.007913
-```
-
---
-### What can we do to improve it?
-
---
-* Split it into at least two functions - `mean_diff` and `pooled_sd`
-
----
-
-```r
-mean_diff &lt;- function(x1, x2, na.rm = TRUE) {
-	m1 &lt;- mean(x1, na.rm = na.rm)
-	m2 &lt;- mean(x2, na.rm = na.rm)
-
-	m1 - m2
-}
-
-pooled_sd &lt;- function(x1, x2, na.rm = TRUE) {
-	var1 &lt;- var(x1, na.rm = na.rm)
-	var2 &lt;- var(x2, na.rm = na.rm)
-
-	if(na.rm == TRUE) {
-		n1 &lt;- length(na.omit(x1))
-		n2 &lt;- length(na.omit(x2))
-	} else {
-		n1 &lt;- length(x1)
-		n2 &lt;- length(x2)
-	}
-	
-	((n1 - 1)*var1 + (n2 - 1)*var2) / (n1 + n2 -2)
-}
-```
-
----
-# Draft 2
-
-
-```r
-coh_d &lt;- function(x1, x2, na.rm = TRUE) {
-	mean_diff(x1, x2, na.rm = na.rm) /
-	  pooled_sd(x1, x2, na.rm = na.rm)
-}
-coh_d(rnorm(1000, 100, 1), rnorm(1000, 95, 1))
-```
-
-```
-## [1] 4.921497
-```
-
----
-# Anything else we could do?
-
---
-* Pull `n` and `var` calculations out from `pooled_sd`
-
-
---
-
-```r
-ns &lt;- function(x1, x2, na.rm = TRUE) {
-	if(na.rm == TRUE) {
-		n1 &lt;- length(na.omit(x1))
-		n2 &lt;- length(na.omit(x2))
-	} else {
-		n1 &lt;- length(x1)
-		n2 &lt;- length(x2)
-	}
-	c(n1, n2)
-}
-
-vars &lt;- function(x1, x2, na.rm = TRUE) {
-	var1 &lt;- var(x1, na.rm = na.rm)
-	var2 &lt;- var(x2, na.rm = na.rm)
-	c(var1, var2)
-}
-```
-
-
----
-
-```r
-pooled_sd &lt;- function(x1, x2, na.rm = TRUE) {
-	n &lt;- ns(x1, x2, na.rm = TRUE)
-	v &lt;- vars(x1, x2, na.rm = TRUE)
-	
-	((n[1] - 1)*v[1] + (n[2] - 1)*v[2]) / (sum(n) -2)
-}
-```
-
-
----
-# Draft 3
-
-
-```r
-coh_d &lt;- function(x1, x2, na.rm = TRUE) {
-	mean_diff(x1, x2, na.rm = na.rm) /
-	  pooled_sd(x1, x2, na.rm = na.rm)
-}
-coh_d(rnorm(1000, 100, 1), rnorm(1000, 95, 1))
-```
-
-```
-## [1] 4.689884
-```
-
----
-# Last bits
-* Consider building in some warnings/errors
-
-
-```r
-coh_d(c(TRUE, TRUE, FALSE), rnorm(15))
-```
-
-```
-## [1] 1.183248
-```
-
-```r
-coh_d &lt;- function(x1, x2, na.rm = TRUE) {
-	if(!is.numeric(x1) | !is.numeric(x2)) {
-		stop("Both `x1` and `x2` must be numeric.")
-	}
-	mean_diff(x1, x2, na.rm = na.rm) /
-	  pooled_sd(x1, x2, na.rm = na.rm)
-}
-coh_d(c(TRUE, TRUE, FALSE), rnorm(15))
-```
-
-```
-## Error in coh_d(c(TRUE, TRUE, FALSE), rnorm(15)): Both `x1` and `x2` must be numeric.
-```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
