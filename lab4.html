@@ -466,31 +466,31 @@ div.tocify {
 <pre><code>## # A tibble: 3 x 8
 ##   Species        n n_valid n_miss  mean        sd      min   max
 ##   &lt;fct&gt;      &lt;int&gt;   &lt;int&gt;  &lt;int&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
-## 1 setosa        50      50     50 3.428 0.3790644 2.300000   4.4
-## 2 versicolor    50      50     50 2.77  0.3137983 2          3.4
-## 3 virginica     50      50     50 2.974 0.3224966 2.2        3.8</code></pre>
+## 1 setosa        50      50      0 3.428 0.3790644 2.300000   4.4
+## 2 versicolor    50      50      0 2.77  0.3137983 2          3.4
+## 3 virginica     50      50      0 2.974 0.3224966 2.2        3.8</code></pre>
 <pre class="r"><code>f(airquality, Month, Ozone)</code></pre>
 <pre><code>## Warning in f(airquality, Month, Ozone): This is a warning about a numeric
 ## grouping variable. Make your message more informative.</code></pre>
 <pre><code>## # A tibble: 5 x 8
 ##   Month     n n_valid n_miss     mean       sd   min   max
 ##   &lt;int&gt; &lt;int&gt;   &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
-## 1     5    31      31     31 23.61538 22.22445     1   115
-## 2     6    30      30     30 29.44444 18.20790    12    71
-## 3     7    31      31     31 59.11538 31.63584     7   135
-## 4     8    31      31     31 59.96154 39.68121     9   168
-## 5     9    30      30     30 31.44828 24.14182     7    96</code></pre>
+## 1     5    31      26      5 23.61538 22.22445     1   115
+## 2     6    30       9     21 29.44444 18.20790    12    71
+## 3     7    31      26      5 59.11538 31.63584     7   135
+## 4     8    31      26      5 59.96154 39.68121     9   168
+## 5     9    30      29      1 31.44828 24.14182     7    96</code></pre>
 <pre class="r"><code>airquality %&gt;%
     mutate(Month = as.factor(Month)) %&gt;%
     f(Month, Ozone)</code></pre>
 <pre><code>## # A tibble: 5 x 8
 ##   Month     n n_valid n_miss     mean       sd   min   max
 ##   &lt;fct&gt; &lt;int&gt;   &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
-## 1 5        31      31     31 23.61538 22.22445     1   115
-## 2 6        30      30     30 29.44444 18.20790    12    71
-## 3 7        31      31     31 59.11538 31.63584     7   135
-## 4 8        31      31     31 59.96154 39.68121     9   168
-## 5 9        30      30     30 31.44828 24.14182     7    96</code></pre>
+## 1 5        31      26      5 23.61538 22.22445     1   115
+## 2 6        30       9     21 29.44444 18.20790    12    71
+## 3 7        31      26      5 59.11538 31.63584     7   135
+## 4 8        31      26      5 59.96154 39.68121     9   168
+## 5 9        30      29      1 31.44828 24.14182     7    96</code></pre>
 <pre class="r"><code>f(iris$Species, iris$Sepal.Width)</code></pre>
 <pre><code>## Error in f(iris$Species, iris$Sepal.Width): This is a non-df error. Make your message more informative</code></pre>
 <pre class="r"><code>f(iris, Sepal.Width, Species)</code></pre>
@@ -522,16 +522,16 @@ div.tocify {
 <p>Note the syntax will look slightly different (because you’re not using NSE) but it all should still work basically the same.</p>
 <pre class="r"><code>f2(iris, &quot;Species&quot;, &quot;Sepal.Width&quot;)</code></pre>
 <pre><code>##    group_var  n n_valid n_miss  mean        sd min max
-## 1     setosa 50      50     50 3.428 0.3790644 2.3 4.4
-## 2 versicolor 50      50     50 2.770 0.3137983 2.0 3.4
-## 3  virginica 50      50     50 2.974 0.3224966 2.2 3.8</code></pre>
+## 1     setosa 50      50      0 3.428 0.3790644 2.3 4.4
+## 2 versicolor 50      50      0 2.770 0.3137983 2.0 3.4
+## 3  virginica 50      50      0 2.974 0.3224966 2.2 3.8</code></pre>
 <pre class="r"><code>f2(mtcars, &quot;cyl&quot;, &quot;mpg&quot;)</code></pre>
 <pre><code>## Warning in f2(mtcars, &quot;cyl&quot;, &quot;mpg&quot;): This is a warning about a numeric
 ## grouping variable. Make your message more informative.</code></pre>
 <pre><code>##   group_var  n n_valid n_miss     mean       sd  min  max
-## 1         4 11      11     11 26.66364 4.509828 21.4 33.9
-## 2         6  7       7      7 19.74286 1.453567 17.8 21.4
-## 3         8 14      14     14 15.10000 2.560048 10.4 19.2</code></pre>
+## 1         4 11      11      0 26.66364 4.509828 21.4 33.9
+## 2         6  7       7      0 19.74286 1.453567 17.8 21.4
+## 3         8 14      14      0 15.10000 2.560048 10.4 19.2</code></pre>
 <pre class="r"><code>f2(iris, &quot;Species&quot;, &quot;Sepal.Width&quot;, list(med = median, 
                                         q20 = function(x) quantile(x, 0.2)))</code></pre>
 <pre><code>##    group_var med q20
@@ -543,7 +543,7 @@ div.tocify {
 <div id="part-b-shiny-app" class="section level2">
 <h2>Part B: Shiny app</h2>
 <p>Build a shiny app using the <code>gss_cat</code> dataset available through the {forcats} package, which you can access with <code>data(gss_cat, package = "forcats")</code>.</p>
-<p>The app should allow the user to select a variable, including (potentially) “none”, and will produce a histogram of <code>tvhours</code> faceted by that variable. Below the plot, render a table summarizing the distributions using the function you wrote in Part A. Note, I would encourage you to take a look at <code>selectInput</code> rather than <code>radioButtons</code> for the categorical variable, but either should work.</p>
+<p>The app should allow the user to select a variable, including (potentially) “none”, and will produce a histogram of <code>tvhours</code> faceted by that variable. Below the plot, render a table summarizing the distribution(s) using the function you wrote in Part A. Note, I would encourage you to take a look at <code>selectInput</code> rather than <code>radioButtons</code> for the categorical variable, but either should work.</p>
 <p>For an example of what the shiny app should look like, see <a href="https://djanderson07.shinyapps.io/lab-c3/">here</a>.</p>
 </div>
 
