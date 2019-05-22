@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Daniel Anderson" />
 
 
-<title>assignments.utf8.md</title>
+<title>Lab 4</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -412,112 +413,132 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">Lab 4</h1>
+<h4 class="author">Daniel Anderson</h4>
+<h4 class="date">Assigned: 5/8/19; Due 5/15/19</h4>
 
 </div>
 
 
-<div id="labs" class="section level1">
-<h1>Labs</h1>
-<div id="of-your-overall-grade" class="section level4">
-<h4>16% of your overall grade</h4>
+<p>There are two parts to this lab. The first includes writing a relatively complicated function. The second involves using that function within a relatively basic shiny app.</p>
+<div id="part-a-writing-a-summary-function" class="section level2">
+<h2>Part A: Writing a summary function</h2>
+<p>Write a function that takes a given data frame as its first argument, a grouping variable as its second argument, and a column to summarize as its third argument.</p>
+<div id="function-behavior" class="section level3">
+<h3>Function behavior</h3>
+<p>By default, the function should report:</p>
+<ul>
+<li>Total number of observations</li>
+<li>Number of non-missing observations</li>
+<li>Number of missing observations</li>
+<li>Mean</li>
+<li>Standard deviation</li>
+<li>Minimum</li>
+<li>Maximum</li>
+</ul>
+<p>However, the function should be flexible so it can take <strong>any function(s)</strong> as its input to summarize by, provided the function results in a single value (e.g., anything you could feed to <code>dplyr::summarize</code>). You’ll need a fourth optional argument that lists the function(s) to use in the summary.</p>
+<div id="errors" class="section level4">
+<h4>Errors</h4>
+<p>Embed an errors if</p>
+<ul>
+<li>Anything other than a data frame is supplied as the first argument</li>
+<li>The provided column to summarize is not numeric.</li>
+</ul>
 </div>
-<div id="points-total-10-points-each" class="section level4">
-<h4>40 points total; 10 points each</h4>
-<p>You are encouraged to work in partners or teams of up to 4 people on labs. However, should you choose to work in teams, labs <strong>must</strong> be submitted as a shared GitHub repository. I will evaluate the commits made by team members before assigning final points.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="center"><strong>Lab</strong></th>
-<th align="left"><strong>Topic</strong></th>
-<th align="center"><strong>Assigned</strong></th>
-<th align="center"><strong>Due</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">1</td>
-<td align="left"><a href="lab1.html">Iterations with Base R</a></td>
-<td align="center">4/10/19</td>
-<td align="center">4/17/19</td>
-</tr>
-<tr class="even">
-<td align="center">2</td>
-<td align="left"><a href="lab2.html">Iterations with {purrr}</a></td>
-<td align="center">4/17/19</td>
-<td align="center">4/24/19</td>
-</tr>
-<tr class="odd">
-<td align="center">3</td>
-<td align="left"><a href="lab3.html">Writing Functions 1</a></td>
-<td align="center">5/8/19</td>
-<td align="center">5/15/19</td>
-</tr>
-<tr class="even">
-<td align="center">4</td>
-<td align="left"><a href="lab4.html">Writing Functions 2</a></td>
-<td align="center">5/22/19</td>
-<td align="center">5/22/19</td>
-</tr>
-</tbody>
-</table>
+<div id="warnings" class="section level4">
+<h4>Warnings</h4>
+<p>Embed a warning if</p>
+<ul>
+<li>The grouping variable is not numeric</li>
+</ul>
 </div>
 </div>
-<div id="midterm" class="section level1">
-<h1>Midterm</h1>
-<div id="of-your-overall-grade-1" class="section level4">
-<h4>20% of your overall grade</h4>
+<div id="some-guidance" class="section level3">
+<h3>Some guidance</h3>
+<p>If you want to use {dplyr} you’ll need to use non-standard evaluation (NSE), so something like <code>!!enquo(group_var)</code>. If you go this route, you will also likely want to look into <code>summarize_*</code>, which take an additional <code>.funs</code> argument (to make the functions used in summarizing more flexible). Finally, <code>dplyr::pull</code> (together with NSE) will likely be helpful for checking types for warnings/errors.</p>
+<p>Alternatively, you might consider <code>split</code>ing the dataset by the grouping variable, then looping over each split to apply the functions supplied.</p>
 </div>
-<div id="points-total" class="section level4">
-<h4>50 points total</h4>
-<p><strong>Assigned</strong>: 4/22/19 <strong>Due</strong>: 5/6/19</p>
-<p><a href="midterm.html">Take-home Portion</a></p>
-<p>More details will be available later in the term, but a midterm will be assigned, which will likely ask you to rewrite code to accomplish a similar task using more efficient and/or readable approaches.</p>
+<div id="sample-output" class="section level3">
+<h3>Sample output</h3>
+<p>Below are some examples of how the function should work. Note that I have purposefully given my function a poor name, but you should think carefully about the name of your function.</p>
+<p><strong>Examples with {dplyr}:</strong></p>
+<pre class="r"><code>f(iris, Species, Sepal.Width)</code></pre>
+<pre><code>## # A tibble: 3 x 8
+##   Species        n n_valid n_miss  mean        sd      min   max
+##   &lt;fct&gt;      &lt;int&gt;   &lt;int&gt;  &lt;int&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1 setosa        50      50     50 3.428 0.3790644 2.300000   4.4
+## 2 versicolor    50      50     50 2.77  0.3137983 2          3.4
+## 3 virginica     50      50     50 2.974 0.3224966 2.2        3.8</code></pre>
+<pre class="r"><code>f(airquality, Month, Ozone)</code></pre>
+<pre><code>## Warning in f(airquality, Month, Ozone): This is a warning about a numeric
+## grouping variable. Make your message more informative.</code></pre>
+<pre><code>## # A tibble: 5 x 8
+##   Month     n n_valid n_miss     mean       sd   min   max
+##   &lt;int&gt; &lt;int&gt;   &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+## 1     5    31      31     31 23.61538 22.22445     1   115
+## 2     6    30      30     30 29.44444 18.20790    12    71
+## 3     7    31      31     31 59.11538 31.63584     7   135
+## 4     8    31      31     31 59.96154 39.68121     9   168
+## 5     9    30      30     30 31.44828 24.14182     7    96</code></pre>
+<pre class="r"><code>airquality %&gt;%
+    mutate(Month = as.factor(Month)) %&gt;%
+    f(Month, Ozone)</code></pre>
+<pre><code>## # A tibble: 5 x 8
+##   Month     n n_valid n_miss     mean       sd   min   max
+##   &lt;fct&gt; &lt;int&gt;   &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+## 1 5        31      31     31 23.61538 22.22445     1   115
+## 2 6        30      30     30 29.44444 18.20790    12    71
+## 3 7        31      31     31 59.11538 31.63584     7   135
+## 4 8        31      31     31 59.96154 39.68121     9   168
+## 5 9        30      30     30 31.44828 24.14182     7    96</code></pre>
+<pre class="r"><code>f(iris$Species, iris$Sepal.Width)</code></pre>
+<pre><code>## Error in f(iris$Species, iris$Sepal.Width): This is a non-df error. Make your message more informative</code></pre>
+<pre class="r"><code>f(iris, Sepal.Width, Species)</code></pre>
+<pre><code>## Error in f(iris, Sepal.Width, Species): This is an error for the outcome variable being non-numeric. Make your message more informative</code></pre>
+<pre class="r"><code>f(iris, Species, Sepal.Width, median)</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   Species    Sepal.Width
+##   &lt;fct&gt;            &lt;dbl&gt;
+## 1 setosa             3.4
+## 2 versicolor         2.8
+## 3 virginica          3</code></pre>
+<pre class="r"><code>f(iris, Species, Sepal.Width, list(~median(.), 
+                                   ~quantile(., 0.2)))</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   Species    median quantile
+##   &lt;fct&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+## 1 setosa        3.4      3.1
+## 2 versicolor    2.8      2.5
+## 3 virginica     3        2.7</code></pre>
+<pre class="r"><code>f(iris, Species, Sepal.Width, list(med = ~median(.), 
+                                   q20 = ~quantile(., 0.2)))</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   Species      med   q20
+##   &lt;fct&gt;      &lt;dbl&gt; &lt;dbl&gt;
+## 1 setosa       3.4   3.1
+## 2 versicolor   2.8   2.5
+## 3 virginica    3     2.7</code></pre>
+<p><strong>Examples without {dplyr}</strong></p>
+<p>Note the syntax will look slightly different (because you’re not using NSE) but it all should still work basically the same.</p>
+<pre class="r"><code>f2(mtcars, &quot;cyl&quot;, &quot;mpg&quot;)</code></pre>
+<pre><code>## Warning in f2(mtcars, &quot;cyl&quot;, &quot;mpg&quot;): This is a warning about a numeric
+## grouping variable. Make your message more informative.</code></pre>
+<pre><code>##   group_var  n n_valid n_miss     mean       sd  min  max
+## 1         4 11      11     11 26.66364 4.509828 21.4 33.9
+## 2         6  7       7      7 19.74286 1.453567 17.8 21.4
+## 3         8 14      14     14 15.10000 2.560048 10.4 19.2</code></pre>
+<pre class="r"><code>f2(iris, &quot;Species&quot;, &quot;Sepal.Width&quot;)</code></pre>
+<pre><code>##    group_var  n n_valid n_miss  mean        sd min max
+## 1     setosa 50      50     50 3.428 0.3790644 2.3 4.4
+## 2 versicolor 50      50     50 2.770 0.3137983 2.0 3.4
+## 3  virginica 50      50     50 2.974 0.3224966 2.2 3.8</code></pre>
 </div>
 </div>
-<div id="final-project" class="section level1">
-<h1>Final Project</h1>
-<div id="of-your-overall-grade-2" class="section level4">
-<h4>60% of your overall grade</h4>
-</div>
-<div id="points-total-1" class="section level4">
-<h4>150 points total</h4>
-<table>
-<thead>
-<tr class="header">
-<th align="left"><strong>Component</strong></th>
-<th align="left"><strong>Points</strong></th>
-<th align="left"><strong>Due</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Groups Finalized</td>
-<td align="left">0</td>
-<td align="left">4/10/19</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#outline_(10_points;_5%)">Outline</a></td>
-<td align="left">10</td>
-<td align="left">5/1/19</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#draft_data_preparation_script_(20_points)">Draft</a></td>
-<td align="left">20</td>
-<td align="left">5/27/19</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#peer_review_of_data_preparation_script_(20_points)">Peer review</a></td>
-<td align="left">20</td>
-<td align="left">6/3/19</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://uo-datasci-specialization.github.io/c3-fun_program_r/site-syllabus.html#final_product_grading_(100_points)">Product</a></td>
-<td align="left">100</td>
-<td align="left">6/12/19 (11:59 pm)</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div id="part-b-shiny-app" class="section level2">
+<h2>Part B: Shiny app</h2>
+<p>Build a shiny app using the <code>gss_cat</code> dataset available through the {forcats} package, which you can access with <code>data(gss_cat, package = "forcats")</code>.</p>
+<p>The app should allow the user to select a variable, including (potentially) “none”, and will produce a histogram of <code>tvhours</code> faceted by that variable. Below the plot, render a table summarizing the distributions using the function you wrote in Part A. Note, I would encourage you to take a look at <code>selectInput</code> rather than <code>radioButtons</code> for the categorical variable, but either should work.</p>
+<p>For an example of what the shiny app should look like, see <a href="https://djanderson07.shinyapps.io/lab-c3/">here</a>.</p>
 </div>
 
 <p>

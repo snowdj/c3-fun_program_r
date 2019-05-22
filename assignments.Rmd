@@ -19,7 +19,7 @@ before assigning final points.
 | 1      | [Iterations with Base R](lab1.html) | 4/10/19      | 4/17/19 |
 | 2      | [Iterations with {purrr}](lab2.html)| 4/17/19      | 4/24/19 |
 | 3      | [Writing Functions 1](lab3.html)    | 5/8/19       | 5/15/19 |
-| 4      | Writing Functions 2                 | 5/15/19      | 5/22/19 | 
+| 4      | [Writing Functions 2](lab4.html)    | 5/22/19      | 5/22/19 |
 
 
 # Midterm
