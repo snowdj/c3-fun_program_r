@@ -439,7 +439,7 @@ div.tocify {
 <p>However, the function should be flexible so it can take <strong>any function(s)</strong> as its input to summarize by, provided the function results in a single value (e.g., anything you could feed to <code>dplyr::summarize</code>). You’ll need a fourth optional argument that lists the function(s) to use in the summary.</p>
 <div id="errors" class="section level4">
 <h4>Errors</h4>
-<p>Embed an errors if</p>
+<p>Embed an error if</p>
 <ul>
 <li>Anything other than a data frame is supplied as the first argument</li>
 <li>The provided column to summarize is not numeric.</li>
@@ -449,14 +449,14 @@ div.tocify {
 <h4>Warnings</h4>
 <p>Embed a warning if</p>
 <ul>
-<li>The grouping variable is not numeric</li>
+<li>The grouping variable is numeric (generally you would expect the grouping variable to be a categorical variable)</li>
 </ul>
 </div>
 </div>
 <div id="some-guidance" class="section level3">
 <h3>Some guidance</h3>
-<p>If you want to use {dplyr} you’ll need to use non-standard evaluation (NSE), so something like <code>!!enquo(group_var)</code>. If you go this route, you will also likely want to look into <code>summarize_*</code>, which take an additional <code>.funs</code> argument (to make the functions used in summarizing more flexible). Finally, <code>dplyr::pull</code> (together with NSE) will likely be helpful for checking types for warnings/errors.</p>
-<p>Alternatively, you might consider <code>split</code>ing the dataset by the grouping variable, then looping over each split to apply the functions supplied.</p>
+<p>If you want to use {dplyr} you’ll need to use non-standard evaluation (NSE), so something like <code>!!enquo(group_var)</code>, where <code>group_var</code> is the formal argument of your function. If you go this route, you will also likely want to look into <code>summarize_*</code>, which take an additional <code>.funs</code> argument (to make the functions used in summarizing more flexible). Finally, <code>dplyr::pull</code> (together with NSE) will likely be helpful for checking types for warnings/errors.</p>
+<p>Alternatively, you might consider <code>split</code>ing the dataset by the grouping variable, then looping over each split to apply the function(s) supplied.</p>
 </div>
 <div id="sample-output" class="section level3">
 <h3>Sample output</h3>
@@ -520,6 +520,11 @@ div.tocify {
 ## 3 virginica    3     2.7</code></pre>
 <p><strong>Examples without {dplyr}</strong></p>
 <p>Note the syntax will look slightly different (because you’re not using NSE) but it all should still work basically the same.</p>
+<pre class="r"><code>f2(iris, &quot;Species&quot;, &quot;Sepal.Width&quot;)</code></pre>
+<pre><code>##    group_var  n n_valid n_miss  mean        sd min max
+## 1     setosa 50      50     50 3.428 0.3790644 2.3 4.4
+## 2 versicolor 50      50     50 2.770 0.3137983 2.0 3.4
+## 3  virginica 50      50     50 2.974 0.3224966 2.2 3.8</code></pre>
 <pre class="r"><code>f2(mtcars, &quot;cyl&quot;, &quot;mpg&quot;)</code></pre>
 <pre><code>## Warning in f2(mtcars, &quot;cyl&quot;, &quot;mpg&quot;): This is a warning about a numeric
 ## grouping variable. Make your message more informative.</code></pre>
@@ -527,11 +532,12 @@ div.tocify {
 ## 1         4 11      11     11 26.66364 4.509828 21.4 33.9
 ## 2         6  7       7      7 19.74286 1.453567 17.8 21.4
 ## 3         8 14      14     14 15.10000 2.560048 10.4 19.2</code></pre>
-<pre class="r"><code>f2(iris, &quot;Species&quot;, &quot;Sepal.Width&quot;)</code></pre>
-<pre><code>##    group_var  n n_valid n_miss  mean        sd min max
-## 1     setosa 50      50     50 3.428 0.3790644 2.3 4.4
-## 2 versicolor 50      50     50 2.770 0.3137983 2.0 3.4
-## 3  virginica 50      50     50 2.974 0.3224966 2.2 3.8</code></pre>
+<pre class="r"><code>f2(iris, &quot;Species&quot;, &quot;Sepal.Width&quot;, list(med = median, 
+                                        q20 = function(x) quantile(x, 0.2)))</code></pre>
+<pre><code>##    group_var med q20
+## 1     setosa 3.4 3.1
+## 2 versicolor 2.8 2.5
+## 3  virginica 3.0 2.7</code></pre>
 </div>
 </div>
 <div id="part-b-shiny-app" class="section level2">
