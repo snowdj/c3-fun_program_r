@@ -1,0 +1,172 @@
+---
+title: "Lab 4"
+author: "Daniel Anderson"
+date: "Assigned: 5/8/19; Due 5/15/19"
+output:
+  html_document: 
+    toc: True
+    toc_float: true
+    theme: "journal"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+There are two parts to this lab. The first includes writing a relatively complicated function. The second involves using that function within a relatively basic shiny app.
+
+## Part A: Writing a summary function
+Write a function that takes a given data frame as its first argument, a
+grouping variable as its second argument, and a column to summarize as
+its third argument. 
+
+### Function behavior
+By default, the function should report:
+
+* Total number of observations
+* Number of non-missing observations
+* Number of missing observations
+* Mean
+* Standard deviation
+* Minimum 
+* Maximum 
+
+However, the function should be flexible so it can take **any function(s)** as its input to summarize by, provided the function results in a single value (e.g., anything you could feed to `dplyr::summarize`). You'll need a fourth optional argument that lists the function(s) to use in the summary. 
+
+#### Errors
+Embed an error if 
+
+* Anything other than a data frame is supplied as the first
+argument
+* The provided column to summarize is not numeric. 
+
+#### Warnings
+Embed a warning if 
+
+* The grouping variable is numeric (generally you would expect the grouping
+variable to be a categorical variable)
+
+### Some guidance
+If you want to use {dplyr} you'll need to use non-standard evaluation (NSE), so
+something like `!!enquo(group_var)`, where `group_var` is the formal argument
+of your function. If you go this route, you will also likely
+want to look into `summarize_*`, which take an additional `.funs` argument (to 
+make the functions used in summarizing more flexible). Finally, `dplyr::pull` 
+(together with NSE) will likely be helpful for checking types for
+warnings/errors.
+
+Alternatively, you might consider `split`ing the
+dataset by the grouping variable, then looping over each split to apply the
+function(s) supplied.
+
+### Sample output
+Below are some examples of how the function should work. Note that I have
+purposefully given my function a poor name, but you should think carefully about
+the name of your function. 
+
+**Examples with {dplyr}:**
+
+```{r include = FALSE}
+library(tidyverse)
+
+####### Try playing with the function to get it to work
+# group_var <- quo(cyl)
+# outcome_var <- quo(mpg)
+
+# mtcars %>%
+# 	group_by(!!group_var) %>%
+# 	summarize_at(vars(!!outcome_var), list(mean, max))
+
+
+# Write the actual function
+f <- function(data, 
+              group_var, 
+              outcome_var, 
+              .funs = list(n = ~length(.),
+                           n_valid = ~sum(!is.na(.)),
+                           n_miss = ~sum(is.na(.)),
+                           mean = ~mean(., na.rm = TRUE),
+                           sd = ~sd(., na.rm = TRUE),
+                           min = ~min(., na.rm = TRUE),
+                           max = ~max(., na.rm = TRUE))
+              ) {
+	if(!is.data.frame(data)) {
+		stop("This is a non-df error. Make your message more informative")
+	}
+	if(!is.numeric(pull(data, !!enquo(outcome_var)))) {
+		stop("This is an error for the outcome variable being non-numeric. Make your message more informative")
+	}
+	if(is.numeric(pull(data, !!enquo(group_var)))) {
+		warning("This is a warning about a numeric grouping variable. Make your message more informative.")
+	}
+	data %>%
+		group_by(!!enquo(group_var)) %>%
+		summarize_at(vars(!!enquo(outcome_var)),
+		             .funs)
+}
+```
+
+```{r examples, error = TRUE}
+f(iris, Species, Sepal.Width)
+f(airquality, Month, Ozone)
+airquality %>%
+	mutate(Month = as.factor(Month)) %>%
+	f(Month, Ozone)
+f(iris$Species, iris$Sepal.Width)
+
+f(iris, Sepal.Width, Species)
+
+f(iris, Species, Sepal.Width, median)
+f(iris, Species, Sepal.Width, list(~median(.), 
+                                   ~quantile(., 0.2)))
+f(iris, Species, Sepal.Width, list(med = ~median(.), 
+                                   q20 = ~quantile(., 0.2)))
+```
+
+**Examples without {dplyr}**
+
+Note the syntax will look slightly different (because you're not using NSE) but it all should still work basically the same.
+
+```{r f2, include = FALSE}
+f2 <- function(data, 
+              group_var, 
+              outcome_var, 
+              .funs = list(n = length,
+                           n_valid = function(x) sum(!is.na(x)),
+                           n_miss = function(x) sum(is.na(x)),
+                           mean = function(x) mean(x, na.rm = TRUE),
+                           sd = function(x) sd(x, na.rm = TRUE),
+                           min = function(x) min(x, na.rm = TRUE),
+                           max = function(x) max(x, na.rm = TRUE))
+              ) {
+	if(!is.data.frame(data)) {
+		stop("This is a non-df error. Make your message more informative")
+	}
+	if(!is.numeric(data[[outcome_var]])) {
+		stop("This is an error for the outcome variable being non-numeric. Make your message more informative")
+	}
+	if(is.numeric(data[[group_var]])) {
+		warning("This is a warning about a numeric grouping variable. Make your message more informative.")
+	}
+	splt <- split(data, data[[group_var]] )
+
+	map(splt, ~map(.funs, function(f) f(.x[[outcome_var]]))) %>%
+		map_df(as.data.frame, .id = "group_var")
+
+}
+```
+
+```{r examples-f2}
+f2(iris, "Species", "Sepal.Width")
+f2(mtcars, "cyl", "mpg")
+f2(iris, "Species", "Sepal.Width", list(med = median, 
+                                        q20 = function(x) quantile(x, 0.2)))
+```
+
+## Part B: Shiny app
+
+Build a shiny app using the `gss_cat` dataset available through the {forcats} package, which you can access with `data(gss_cat, package = "forcats")`. 
+
+The app should allow the user to select a variable, including (potentially) "none", and will produce a histogram of `tvhours` faceted by that variable. Below the plot, render a table summarizing the distribution(s) using the function you wrote in Part A. Note, I would encourage you to take a look at `selectInput` rather than `radioButtons` for the categorical variable, but either should work.
+
+For an example of what the shiny app should look like, see [here](https://djanderson07.shinyapps.io/lab-c3/).
