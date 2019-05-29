@@ -1,26 +1,28 @@
----
-title: "Shiny: Part 2"
-author: "Daniel Anderson "
-date: "Week 9, Class 1"
-output:
-  xaringan::moon_reader:
-    css: ["default", "uo", "uo-fonts", "custom.css"]
-    lib_dir: libs
-    nature:
-      highlightStyle: atelier-dune-light
-      highlightLines: true
-      countIncrementalSlides: false
-      beforeInit: "https://platform.twitter.com/widgets.js"
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Shiny: Part 2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/countdown-0.1.0/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.1.0/countdown.js"></script>
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Shiny: Part 2
+### Daniel Anderson
+### Week 9, Class 2
+
 ---
 
-```{r setup, include = FALSE}
-library(tidyverse)
-theme_set(theme_minimal(20))
-update_geom_defaults("point", list(size = 3))
-knitr::opts_chunk$set(fig.width = 13, 
-                      message = FALSE, 
-                      warning = FALSE)
-```
+
+
 
 # Agenda
 * Review Lab 3 (quickly)
@@ -53,12 +55,9 @@ class: inverse center middle
 
 Create a basic shiny template, as we did before.
 
-`r countdown::countdown(minutes = 3, 
-                        left = 0, 
-                        right = 0,
-                        bottom = 0.5,
-                        color_running_background = "#FEE11A",
-                        color_running_text = "#000")`
+<div class="countdown" id="timer_5ceeb961" style="right:0;bottom:0.5;left:0;">
+<code><span class="digits minutes">03</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
 
 
 ---
@@ -104,12 +103,9 @@ Even if you don't know the specific code, what would we change?
 --
 ### Try!
 
-`r countdown::countdown(minutes = 2, 
-                        left = 0, 
-                        right = 0,
-                        bottom = 1,
-                        color_running_background = "#FEE11A",
-                        color_running_text = "#000")`
+<div class="countdown" id="timer_5ceeb825" style="right:0;bottom:1;left:0;">
+<code><span class="digits minutes">02</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
 
 ---
 class: inverse center middle
@@ -135,19 +131,20 @@ within that range.
 * Because this is base syntax, I'll give you the basics for the table, you focus
 on the shiny part
 
-```{r tbl, eval = FALSE}
-input_bins <- 30 # placeholder for whatever the input is
 
-bins <- seq(min(mtcars$mpg), 
+```r
+input_bins &lt;- 30 # placeholder for whatever the input is
+
+bins &lt;- seq(min(mtcars$mpg), 
             max(mtcars$mpg), 
             length.out = input_bins + 1)
 
-h <- hist(mtcars$mpg, breaks = bins, plot = FALSE)
+h &lt;- hist(mtcars$mpg, breaks = bins, plot = FALSE)
 
 tibble(lower = lag(h$breaks),
-       upper = h$breaks) %>%
-  drop_na(lower) %>%
-  mutate(counts = h$counts) %>%
+       upper = h$breaks) %&gt;%
+  drop_na(lower) %&gt;%
+  mutate(counts = h$counts) %&gt;%
   mutate_if(is.numeric, round, 2)
 ```
 --
@@ -156,12 +153,9 @@ tibble(lower = lag(h$breaks),
 * Create the bins within each `render*`
 
 
-`r countdown::countdown(minutes = 4, 
-                        left = 1, 
-                        right = 0,
-                        bottom = 0,
-                        color_running_background = "#FEE11A",
-                        color_running_text = "#000")`
+<div class="countdown" id="timer_5ceeb8b7" style="right:0;bottom:0;left:1;">
+<code><span class="digits minutes">04</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
 
 ---
 class: inverse center middle
@@ -173,12 +167,9 @@ class: inverse center middle
 # Move it to a tabset
 * Just create a `tabsetPanel` within the `mainPanel`, then put the output for each tab within `tabPanel`.
 
-`r countdown::countdown(minutes = 5, 
-                        left = 0, 
-                        right = 0,
-                        bottom = 0.5,
-                        color_running_background = "#FEE11A",
-                        color_running_text = "#000")`
+<div class="countdown" id="timer_5ceeb609" style="right:0;bottom:0.5;left:0;">
+<code><span class="digits minutes">05</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
 
 
 
@@ -232,11 +223,12 @@ class: inverse center middle
 
 ---
 # First dashboard - ui
-```{r dashboard1-ui, eval = FALSE}
+
+```r
 library(shiny)
 library(shinydashboard)
 
-ui <- dashboardPage(
+ui &lt;- dashboardPage(
   dashboardHeader(title = "Basic dashboard"),
   dashboardSidebar(),
   dashboardBody(
@@ -256,13 +248,14 @@ ui <- dashboardPage(
 ---
 # First dashboard - server
 
-```{r dashboard1-server, eval = FALSE}
-server <- function(input, output) {
-  set.seed(122)
-  histdata <- rnorm(500)
 
-  output$plot1 <- renderPlot({
-    data <- histdata[seq_len(input$slider)]
+```r
+server &lt;- function(input, output) {
+  set.seed(122)
+  histdata &lt;- rnorm(500)
+
+  output$plot1 &lt;- renderPlot({
+    data &lt;- histdata[seq_len(input$slider)]
     hist(data)
   })
 }
@@ -271,7 +264,8 @@ server <- function(input, output) {
 --
 ### Run it
 
-```{r, run-dashboard, eval = FALSE}
+
+```r
 shinyApp(ui, server)
 ```
 
@@ -295,7 +289,8 @@ body
 --
 ### Example
 
-```{r sidebar, eval = FALSE}
+
+```r
 sidebarMenu(
   menuItem("Histogram", tabName = "histo", icon = icon("chart-bar")),
   menuItem("Bin Counts", tabName = "bins", icon = icon("table"))
@@ -351,3 +346,95 @@ And from Ian lyttle, there's the [bsplus](http://ijlyttle.github.io/bsplus/) pac
 * Consider styling with [shinythemes](https://rstudio.github.io/shinythemes/)
 
 * If you end up wanting to go deep with shiny, you may want to read more about [reactivity](https://shiny.rstudio.com/articles/understanding-reactivity.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
