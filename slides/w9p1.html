@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Shiny: Part 2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Daniel Anderson" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+    <link href="libs/countdown-0.1.0/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.1.0/countdown.js"></script>
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Shiny: Part 2
+### Daniel Anderson
+### Week 9, Class 1
+
+---
+
+
+
+
+# Agenda
+* Review Lab 3 (quickly)
+
+* Review Lab 4
+
+* Review shiny basics
+
+* Discuss some layout options
+
+* Introduce shiny dashboard
+
+* Some extensions worth exploring later
+
+---
+# Learning objectives
+* Solidify your understanding of the UI/Server relation
+
+* Be able create tabsets and a navbar
+
+* Be able to create basic shiny dashboards
+
+---
+class: inverse center middle
+# Review labs
+
+
+---
+# Basic shiny
+
+Create a basic shiny template, as we did before.
+
+<div class="countdown" id="timer_5ceeb6fd" style="right:0;bottom:0.5;left:0;">
+<code><span class="digits minutes">03</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
+
+
+---
+# UI 
+
+* The `ui` defines the look and feel of the app - the user interface
+
+* Use it to define where output "lives"
+
+* It also defines the inputs for the `server`, where functions are actually
+evaluated.
+
+* In the template/default case, a `sliderInput` has been defined, which we're
+calling `"bins"`. It will take on values from 1 to 50, and will start at 30.
+
+* Access the specific value the user selects within the `server`, through `input$bins`.
+
+
+---
+# Server
+
+* The `server` function takes the `input` from the UI and produces `output` with normal R code.
+
+* In this case, we're creating one output object, called `distPlot`. The result is then called through the `ui` on line 30
+
+
+---
+# Change the input
+Let's switch from a slider to a drop down menu. 
+
+
+--
+### How?
+
+Even if you don't know the specific code, what would we change?
+
+
+--
+`sliderInput` will become `selectInput`. The arguments will also be slightly
+  different
+
+
+--
+### Try!
+
+<div class="countdown" id="timer_5ceeb5e3" style="right:0;bottom:1;left:0;">
+<code><span class="digits minutes">02</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
+
+---
+class: inverse center middle
+
+# layouts
+
+---
+# Tabs
+
+* Let's say we wanted a tabset with different things.
+
+
+--
+* First, we need at least two things!
+
+
+--
+* Let's create a table that has the lower/upper bound of the bin, and the counts
+within that range.
+
+---
+# Table creation
+* Because this is base syntax, I'll give you the basics for the table, you focus
+on the shiny part
+
+
+```r
+input_bins &lt;- 30 # placeholder for whatever the input is
+
+bins &lt;- seq(min(mtcars$mpg), 
+            max(mtcars$mpg), 
+            length.out = input_bins + 1)
+
+h &lt;- hist(mtcars$mpg, breaks = bins, plot = FALSE)
+
+tibble(lower = lag(h$breaks),
+       upper = h$breaks) %&gt;%
+  drop_na(lower) %&gt;%
+  mutate(counts = h$counts) %&gt;%
+  mutate_if(is.numeric, round, 2)
+```
+--
+* You take it from here! Add a table below the plot 
+  + use `DT::datatable`
+* Create the bins within each `render*`
+
+
+<div class="countdown" id="timer_5ceeb74e" style="right:0;bottom:0;left:1;">
+<code><span class="digits minutes">04</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
+
+---
+class: inverse center middle
+
+# [demo]
+
+
+---
+# Move it to a tabset
+* Just create a `tabsetPanel` within the `mainPanel`, then put the output for each tab within `tabPanel`.
+
+<div class="countdown" id="timer_5ceeb662" style="right:0;bottom:0.5;left:0;">
+<code><span class="digits minutes">05</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
+</div>
+
+
+
+
+---
+# Different pages
+### Add a navbar
+
+* Instead of using a tabset with `tabsetPanel`, you might want to have a navbar at the top of the page, which you can create with `navbarPage`.
+
+
+--
+* Can be a bit more complicated - each `tabset` needs to include everything, including the `sidebarPanel` (if present), could include tabsets, `mainPanel`, etc.
+
+
+--
+* Essentially each tab from the `navbar` becomes an entirely new page.
+
+
+---
+# More on the navbar
+* Can really help with organization/flexibility (you could even have tabs
+within a page)
+
+* Refactoring can help organization A LOT
+  + Pull pieces out to try to make code more readable/less buggy.
+
+
+---
+class: inverse center middle
+
+
+# [example]
+
+
+---
+class: inverse center middle
+# {shinydashboard}
+
+---
+# Example
+
+[This](https://djanderson07.shinyapps.io/ela-shiny/) is a shiny dashboard I created for the [Lane Early Learning Alliance](https://earlylearningalliance.org)
+
+
+--
+### Get started
+
+* Go [here](https://rstudio.github.io/shinydashboard/get_started.html)
+
+
+---
+# First dashboard - ui
+
+```r
+library(shiny)
+library(shinydashboard)
+
+ui &lt;- dashboardPage(
+  dashboardHeader(title = "Basic dashboard"),
+  dashboardSidebar(),
+  dashboardBody(
+    # Boxes need to be put in a row (or column)
+    fluidRow(
+      box(plotOutput("plot1", height = 250)),
+
+      box(
+        title = "Controls",
+        sliderInput("slider", "Number of observations:", 1, 100, 50)
+      )
+    )
+  )
+)
+```
+
+---
+# First dashboard - server
+
+
+```r
+server &lt;- function(input, output) {
+  set.seed(122)
+  histdata &lt;- rnorm(500)
+
+  output$plot1 &lt;- renderPlot({
+    data &lt;- histdata[seq_len(input$slider)]
+    hist(data)
+  })
+}
+```
+
+--
+### Run it
+
+
+```r
+shinyApp(ui, server)
+```
+
+[demo]
+
+---
+# Main differences
+* You now have `dashboardSidebar` and `dashboardBody`
+
+* You also now have `fluidRow` and `box` arguments to arrange things in the main
+body
+
+
+---
+# Sidebar
+* Probably the defining characteristic of the dashboard
+
+  + Define a `sidebarMenu` with `menuItem`s
+
+
+--
+### Example
+
+
+```r
+sidebarMenu(
+  menuItem("Histogram", tabName = "histo", icon = icon("chart-bar")),
+  menuItem("Bin Counts", tabName = "bins", icon = icon("table"))
+    )
+```
+
+You can also do things like put the slider in the `sidebarMenu`
+
+[demo]
+
+---
+# Referencing menu items
+
+* If you define `menuItem`s, you'll have to give them a `tabName` (see previous
+slide).
+
+* In the `dashboardBody`, create a `tabItems` with specific `tabItem` pieces.
+  This should be how you control/refer to the `menuItem`.
+
+
+[demo]
+
+
+
+---
+# Extension
+
+Consider {shinydashboardplus}
+
+[Example](https://rinterface.com/shiny/shinydashboardPlus/)
+
+
+
+---
+# Other layouts/themes
+The [RinteRface](https://rinterface.com) group founded by [David Granjon](https://twitter.com/divadnojnarg) has built a couple other packages that can help you make really fancy looking apps pretty efficiently/easily.
+
+[bs4dash](https://rinterface.com/shiny/bs4Dash/)
+
+[argonDash](https://rinterface.com/shiny/argonDash/)
+
+And from Ian lyttle, there's the [bsplus](http://ijlyttle.github.io/bsplus/) package for increased fanciness
+
+
+---
+# Conclusions
+* Shiny is super customizable - almost limitless (see more examples [here](https://shiny.rstudio.com/gallery/))
+
+* Great for building interactive plots, but you can use it for all sorts of other things too (including text and tables)
+
+* Really helpful and fun way to build data tools for practitioners
+
+* Consider styling with [shinythemes](https://rstudio.github.io/shinythemes/)
+
+* If you end up wanting to go deep with shiny, you may want to read more about [reactivity](https://shiny.rstudio.com/articles/understanding-reactivity.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-dune-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
