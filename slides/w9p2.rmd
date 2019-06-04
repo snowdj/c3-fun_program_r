@@ -156,7 +156,7 @@ tibble(lower = lag(h$breaks),
 * Create the bins within each `render*`
 
 
-`r countdown::countdown(minutes = 4, 
+`r countdown::countdown(minutes = 8, 
                         left = 1, 
                         right = 0,
                         bottom = 0,
