@@ -57,7 +57,7 @@ conducting the calculation. You may not use `base::mean` or any similar function
 my_mean <- function(x) {
 	if(any(is.na(x))) {
 		tot_na <- sum(is.na(x))
-		warning(paste(tot_na, "observations removed due to missingness"))
+		warning(tot_na, " observations removed due to missingness")
 		x <- na.omit(x)
 	}
 	sum(x) / length(x)
@@ -169,8 +169,8 @@ df_summary <- function(df, as_tibble = TRUE) {
 
 	if(as_tibble) {
 		tbl <- tibble::tibble(variable = names(df_num),
-		               mean = means,
-		               sd = sds)
+		                      mean = means,
+		                      sd = sds)
 	} else {
 		tbl <- data.frame(variable = names(df_num),
 		                  mean = means,
