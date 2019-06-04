@@ -108,12 +108,12 @@ head(d)
 ## # A tibble: 6 x 3
 ##         low     high var   
 ##       &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt; 
-## 1  8.681881 12.49128 common
-## 2  9.961470 13.39199 common
-## 3  9.724103 10.69004 common
-## 4 10.01914  10.68967 common
-## 5 10.43775  14.44523 common
-## 6  9.263033 11.07056 common
+## 1  8.825456 12.47162 common
+## 2  9.489170 11.92511 common
+## 3  9.909542 10.46752 common
+## 4  9.485481 10.65903 common
+## 5 10.31626  13.96280 common
+## 6 10.27789  11.93784 common
 ```
 
 ---
@@ -129,16 +129,16 @@ d
 ## # A tibble: 4,000 x 3
 ##    var    group     value
 ##    &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;
-##  1 common low    8.681881
-##  2 common low    9.961470
-##  3 common low    9.724103
-##  4 common low   10.01914 
-##  5 common low   10.43775 
-##  6 common low    9.263033
-##  7 common low    9.104257
-##  8 common low    9.965611
-##  9 common low    9.041427
-## 10 common low   10.67263 
+##  1 common low    8.825456
+##  2 common low    9.489170
+##  3 common low    9.909542
+##  4 common low    9.485481
+##  5 common low   10.31626 
+##  6 common low   10.27789 
+##  7 common low   10.83063 
+##  8 common low    9.446087
+##  9 common low   11.75976 
+## 10 common low    9.741372
 ## # … with 3,990 more rows
 ```
 
@@ -189,9 +189,9 @@ qtile_es(value ~ group, common)
 
 ```
 ##   ref_group foc_group low_qtile high_qtile midpoint        es         se
-## 1      high       low      0.00       0.33    0.165 -1.985672 0.09526356
-## 2      high       low      0.33       0.66    0.495 -1.954056 0.09462179
-## 3      high       low      0.66       0.99    0.825 -2.006028 0.09544215
+## 1      high       low      0.00       0.33    0.165 -2.033019 0.09601942
+## 2      high       low      0.33       0.66    0.495 -2.012651 0.09554771
+## 3      high       low      0.66       0.99    0.825 -2.004373 0.09541580
 ```
 
 ```r
@@ -200,9 +200,9 @@ qtile_es(value ~ group, diff)
 
 ```
 ##   ref_group foc_group low_qtile high_qtile midpoint         es         se
-## 1      high       low      0.00       0.33    0.165 -0.6906864 0.08025912
-## 2      high       low      0.33       0.66    0.495 -1.2896162 0.08556014
-## 3      high       low      0.66       0.99    0.825 -2.0125574 0.09554623
+## 1      high       low      0.00       0.33    0.165 -0.5559503 0.07946000
+## 2      high       low      0.33       0.66    0.495 -1.2646192 0.08527701
+## 3      high       low      0.66       0.99    0.825 -1.8279283 0.09269256
 ```
 
 ---
@@ -431,6 +431,7 @@ describe &lt;- function(data, column_name) {
 
 
 ```r
+set.seed(8675309)
 df1 &lt;- tibble(x = rnorm(100))
 df2 &lt;- tibble(var_miss = c(rnorm(1000, 10, 4), rep(NA, 27)))
 describe(df1, "x")
@@ -440,7 +441,7 @@ describe(df1, "x")
 ## # A tibble: 1 x 5
 ##       N n_valid n_missing       mean        sd
 ##   &lt;int&gt;   &lt;int&gt;     &lt;int&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-## 1   100     100         0 -0.1232486 0.9552443
+## 1   100     100         0 0.05230278 0.9291437
 ```
 
 ```r
@@ -451,7 +452,7 @@ describe(df2, "var_miss")
 ## # A tibble: 1 x 5
 ##       N n_valid n_missing     mean       sd
 ##   &lt;int&gt;   &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1  1027    1000        27 9.798022 4.108262
+## 1  1027    1000        27 9.881107 4.090208
 ```
 
 ---
@@ -487,9 +488,10 @@ If you don't include `@export`, your function will be *internal*, meaning others
 ---
 # Other docs
 
-* .bolder[`.gitignore`]: Files to ignore for git commits with some pre-slugged entries
 * .bolder[`NAMESPACE`]: Created by **{roxygen2}**. Don't edit it. If you need to, trash it and it will be reproduced. 
+
 * .bolder[`DESCRIPTION`]: Describes your package (more on next slide)
+
 * .bolder[`man/`]: The documentation files. Created by **{roxygen2}**. Don't edit.
 
 ---
@@ -575,8 +577,8 @@ Depends:
     R (&gt;= 3.1)
 Imports:
     sfsmisc
-URL: https://github.com/DJAnderson07/esvis
-BugReports: https://github.com/DJAnderson07/esvis/issues
+URL: https://github.com/datalorax/esvis
+BugReports: https://github.com/datalorax/esvis/issues
 License: MIT + file LICENSE
 LazyData: true
 RoxygenNote: 6.0.1
@@ -705,7 +707,7 @@ class: inverse center middle
 class: center middle
 
 &lt;i class="fa fa-github fa-5x"&gt;&lt;/i&gt;
-# [esvis](https://github.com/DJAnderson07/esvis)
+# [esvis](https://github.com/datalorax/esvis)
 
 ---
 # Quickly
