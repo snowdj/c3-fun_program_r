@@ -44,3 +44,5 @@ vignettes/*.pdf
 *.knit.md
 
 slides/scratch\.rmd
+
+shiny-examples/shiny-lab4/rsconnect/shinyapps\.io/djanderson07/lab-c3\.dcf
